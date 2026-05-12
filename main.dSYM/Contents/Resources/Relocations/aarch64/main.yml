@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/vitalii/Projects/PUT/Mortal_combat_ff/main'
+relocations:     []
+...
