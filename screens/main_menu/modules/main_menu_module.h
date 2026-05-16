@@ -13,7 +13,7 @@ class MainMenuModule : public Screen
     Game &_game;
 
 public:
-    MainMenuModule(Game &game) : Screen(), _game(game) {};
+    MainMenuModule(Game &game);
     ~MainMenuModule() override = default;
     void handle_frame_signal() override;
 };

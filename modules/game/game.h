@@ -19,8 +19,8 @@ enum class GAME_STATUS
 
 class Game
 {
-    static CURRENT_SCREEN _current_screen;
-    static std::unique_ptr<Screen> _current_screen_ptr;
+    CURRENT_SCREEN _current_screen;
+    std::unique_ptr<Screen> _current_screen_ptr;
     // static GAME_STATUS game_status_;
 
 public:
@@ -34,9 +34,9 @@ public:
 
     void trig_fps_signal();
 
-    static std::vector<std::unique_ptr<sf::Drawable>> shapes;
-    static sf::RenderWindow *_window;
-    static sf::Texture selected_bg;
+    std::vector<std::unique_ptr<sf::Drawable>> shapes;
+    sf::RenderWindow *_window;
+    sf::Texture selected_bg;
     // selected_character_A
     // selected_character_B
 };
