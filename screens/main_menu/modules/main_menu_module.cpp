@@ -1,5 +1,6 @@
 #include "main_menu_module.h"
 #include "modules/game/game.h"
+#include "screens/main_menu/components/bg_select.h"
 #include "iostream"
 
 MainMenuModule::MainMenuModule(Game &game) : Screen(), _game(game)
@@ -21,6 +22,11 @@ MainMenuModule::MainMenuModule(Game &game) : Screen(), _game(game)
         }
         _bg_textures.emplace_back(bg_texture);
     }
+    if (bg_paths.size())
+    {
+        _game.set_selected_bg(_bg_textures[0]);
+    };
+    init_bg_select(this);
 };
 
 void MainMenuModule::handle_frame_signal()
@@ -31,7 +37,6 @@ void MainMenuModule::handle_frame_signal()
             _game._window->close();
         if (const auto *keyPressed = event->getIf<sf::Event::KeyPressed>())
         {
-            std::cout << "Key pressed" << std::endl;
             if (keyPressed->scancode == sf::Keyboard::Scancode::I)
             {
                 prev_bg();
@@ -40,7 +45,6 @@ void MainMenuModule::handle_frame_signal()
             {
                 next_bg();
             }
-            std::cout << "Bg index: " << _active_bg_index << std::endl;
         }
     }
 }
