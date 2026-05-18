@@ -12,7 +12,7 @@ std::vector<std::string> bg_paths = {};
 class MainMenuModule : public Screen
 {
     std::vector<sf::Texture> _bg_textures;
-    int _active_bg_index;
+    int _active_bg_index = 0;
     // std::vector<std::unique_ptr<sf::Character>> _characters;
     Game &_game;
 
