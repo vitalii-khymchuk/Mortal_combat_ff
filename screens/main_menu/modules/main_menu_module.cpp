@@ -4,11 +4,23 @@
 
 MainMenuModule::MainMenuModule(Game &game) : Screen(), _game(game)
 {
-    std::unique_ptr<sf::RectangleShape> rectangle = std::make_unique<sf::RectangleShape>((sf::Vector2f(120.0f, 60.0f)));
-    rectangle->setPosition(sf::Vector2f(500.0f, 400.0f));
-    rectangle->setFillColor(sf::Color(100, 50, 250));
+    // placeholder
+    //  std::unique_ptr<sf::RectangleShape> rectangle = std::make_unique<sf::RectangleShape>((sf::Vector2f(120.0f, 60.0f)));
+    //  rectangle->setPosition(sf::Vector2f(500.0f, 400.0f));
+    //  rectangle->setFillColor(sf::Color(100, 50, 250));
 
-    game.shapes.emplace_back(std::move(rectangle));
+    // game.shapes.emplace_back(std::move(rectangle));
+
+    for (auto path : bg_paths)
+    {
+        sf::Texture bg_texture;
+
+        if (!bg_texture.loadFromFile(path))
+        {
+            throw std::runtime_error("Background picture path is not valid: " + path);
+        }
+        _bg_textures.emplace_back(bg_texture);
+    }
 };
 
 void MainMenuModule::handle_frame_signal()
@@ -20,6 +32,43 @@ void MainMenuModule::handle_frame_signal()
         if (const auto *keyPressed = event->getIf<sf::Event::KeyPressed>())
         {
             std::cout << "Key pressed" << std::endl;
+            if (keyPressed->scancode == sf::Keyboard::Scancode::I)
+            {
+                prev_bg();
+            }
+            if (keyPressed->scancode == sf::Keyboard::Scancode::O)
+            {
+                next_bg();
+            }
+            std::cout << "Bg index: " << _active_bg_index << std::endl;
         }
     }
+}
+
+void MainMenuModule::prev_bg()
+{
+    if (_active_bg_index > 0)
+    {
+        _active_bg_index--;
+    }
+    else
+    {
+        _active_bg_index = (_bg_textures.size() - 1);
+    }
+    _game.set_selected_bg(*(_bg_textures.begin() + _active_bg_index));
+    // add to shapes
+}
+
+void MainMenuModule::next_bg()
+{
+    if (_active_bg_index < (_bg_textures.size() - 1))
+    {
+        _active_bg_index++;
+    }
+    else
+    {
+        _active_bg_index = 0;
+    }
+    _game.set_selected_bg(*(_bg_textures.begin() + _active_bg_index));
+    // add to shapes
 }

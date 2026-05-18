@@ -7,10 +7,17 @@
 class Screen;
 class Game;
 
+std::vector<std::string> bg_paths = {};
+
 class MainMenuModule : public Screen
 {
-    std::vector<std::unique_ptr<sf::Drawable>> _backgrounds;
+    std::vector<sf::Texture> _bg_textures;
+    int _active_bg_index;
+    // std::vector<std::unique_ptr<sf::Character>> _characters;
     Game &_game;
+
+    void prev_bg();
+    void next_bg();
 
 public:
     MainMenuModule(Game &game);
