@@ -2,11 +2,10 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
-class Background
+class Character
 {
-    std::string path_;
-    sf::Texture bg_texture;
+    std::string _name;
+    sf::Texture _avatar;
 
-public:
-    Background(std::string path) : path_(path) {};
+    Character(std::string name, sf::Texture avatar) {};
 };
