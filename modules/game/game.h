@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "modules/character/character.h"
 class Screen;
 
 enum class CURRENT_SCREEN
@@ -37,6 +38,6 @@ public:
     std::vector<std::unique_ptr<sf::Drawable>> shapes;
     sf::RenderWindow *_window;
     sf::Texture selected_bg;
-    // selected_character_A
-    // selected_character_B
+    Character selected_character_A;
+    Character selected_character_B;
 };
