@@ -18,6 +18,7 @@ int main()
             window.draw(*figure);
         }
 
+        
         window.display();
     }
 
