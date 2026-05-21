@@ -1,6 +1,7 @@
 #include "main_menu_module.h"
 #include "modules/game/game.h"
 #include "screens/main_menu/components/bg_select.h"
+#include "screens/main_menu/components/character_select.h"
 #include "iostream"
 
 MainMenuModule::MainMenuModule(Game &game) : Screen(), _game(game)
@@ -27,6 +28,7 @@ MainMenuModule::MainMenuModule(Game &game) : Screen(), _game(game)
         _game.set_selected_bg(_bg_textures[0]);
     };
     init_bg_select(this);
+    init_char_select(this);
 };
 
 void MainMenuModule::handle_frame_signal()

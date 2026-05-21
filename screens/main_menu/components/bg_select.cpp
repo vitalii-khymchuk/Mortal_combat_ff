@@ -54,8 +54,8 @@ void init_bg_select(MainMenuModule *main_menu_ptr)
     circle_r->setPosition(sf::Vector2f(circleS_pos[1].first, circleS_pos[1].second));
 
     // Setting the horizontal devinding line
-    auto horizontal_line = std::make_unique<sf::RectangleShape>(sf::Vector2f(760.0f, 5.0f));
-    horizontal_line->setPosition(sf::Vector2f(20.0f, 300.0f));
+    auto horizontal_line = std::make_unique<sf::RectangleShape>(sf::Vector2f(800.0f, 5.0f));
+    horizontal_line->setPosition(sf::Vector2f(0.0f, 260.0f));
     horizontal_line->setFillColor(sf::Color::White);
 
     // Create sprite from selected background

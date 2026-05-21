@@ -7,5 +7,6 @@ class Character
     std::string _name;
     sf::Texture _avatar;
 
-    Character(std::string name, sf::Texture avatar) {};
+public:
+    Character(std::string name, sf::Texture avatar);
 };
