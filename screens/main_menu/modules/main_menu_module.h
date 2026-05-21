@@ -21,8 +21,7 @@ class MainMenuModule : public Screen
     void prev_bg();
     void next_bg();
 
-    void change_character_a(const int &shift);
-    void next_character_a();
+    void MainMenuModule::change_character(const int &shift, int &active_index, bool is_character_B);
 
 public:
     Game &_game;

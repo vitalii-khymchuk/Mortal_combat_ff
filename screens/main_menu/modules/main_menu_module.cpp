@@ -4,6 +4,7 @@
 #include "modules/character/character.h"
 #include "screens/main_menu/components/characters/characters.h"
 #include "iostream"
+#include "cmath"
 
 static int CHARACTERS_IN_ROW = 3;
 
@@ -51,21 +52,37 @@ void MainMenuModule::handle_frame_signal()
             {
                 next_bg();
             }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::I)
+            if (keyPressed->scancode == sf::Keyboard::Scancode::W)
             {
-                prev_bg();
+                change_character(CHARACTERS_IN_ROW, _active_character_a_index, false);
             }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::O)
+            if (keyPressed->scancode == sf::Keyboard::Scancode::A)
             {
-                next_bg();
+                change_character(-1, _active_character_a_index, false);
             }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::I)
+            if (keyPressed->scancode == sf::Keyboard::Scancode::S)
             {
-                prev_bg();
+                change_character(-CHARACTERS_IN_ROW, _active_character_a_index, false);
             }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::O)
+            if (keyPressed->scancode == sf::Keyboard::Scancode::D)
             {
-                next_bg();
+                change_character(1, _active_character_a_index, false);
+            }
+            if (keyPressed->scancode == sf::Keyboard::Scancode::Up)
+            {
+                change_character(CHARACTERS_IN_ROW, _active_character_b_index, true);
+            }
+            if (keyPressed->scancode == sf::Keyboard::Scancode::Left)
+            {
+                change_character(-1, _active_character_b_index, true);
+            }
+            if (keyPressed->scancode == sf::Keyboard::Scancode::Down)
+            {
+                change_character(-CHARACTERS_IN_ROW, _active_character_b_index, true);
+            }
+            if (keyPressed->scancode == sf::Keyboard::Scancode::Right)
+            {
+                change_character(1, _active_character_b_index, true);
             }
         }
     }
@@ -97,60 +114,52 @@ void MainMenuModule::next_bg()
     _game.set_selected_bg(*(_bg_textures.begin() + _active_bg_index));
 }
 
-void MainMenuModule::change_character_a(const int &shift)
+void MainMenuModule::change_character(const int &shift, int &active_index, bool is_character_B)
 {
-    int current_row = _active_character_a_index / CHARACTERS_IN_ROW;
-    int current_column = _active_character_a_index % CHARACTERS_IN_ROW;
+    if (_characters->empty())
+        return;
 
-    int delta_row = (current_column + shift) / CHARACTERS_IN_ROW;
-    // int delta_column =
+    int current_row = active_index / CHARACTERS_IN_ROW;
+    int current_column = active_index % CHARACTERS_IN_ROW;
 
-    if (_active_character_a_index > 0)
+    int characters_qty = _characters->size();
+    int last_row_index = (characters_qty - 1) / CHARACTERS_IN_ROW;
+
+    auto wrap = [](int value, int size)
     {
-        _active_character_a_index--;
+        return ((value % size) + size) % size;
+    };
+
+    int new_row = current_row;
+    int new_column = current_column;
+
+    // select left / right
+    if (std::abs(shift) < CHARACTERS_IN_ROW)
+    {
+        int columns_in_current_row = std::min(
+            CHARACTERS_IN_ROW,
+            characters_qty - current_row * CHARACTERS_IN_ROW);
+
+        new_column = wrap(current_column + shift, columns_in_current_row);
+    }
+    // select up / down
+    else
+    {
+        int row_shift = shift / CHARACTERS_IN_ROW;
+
+        int rows_in_current_column =
+            ((characters_qty - 1 - current_column) / CHARACTERS_IN_ROW) + 1;
+
+        new_row = wrap(current_row + row_shift, rows_in_current_column);
+    }
+
+    active_index = new_row * CHARACTERS_IN_ROW + new_column;
+    if (is_character_B)
+    {
+        _game.selected_character_B = (*_characters)[active_index];
     }
     else
     {
-        _active_character_a_index = (_characters->size() - 1);
+        _game.selected_character_A = (*_characters)[active_index];
     }
-    _game.selected_character_A = *(_characters->begin() + _active_character_a_index);
-}
-
-void MainMenuModule::next_character_a()
-{
-    if (_active_character_a_index < (_characters->size() - 1))
-    {
-        _active_character_a_index++;
-    }
-    else
-    {
-        _active_character_a_index = 0;
-    }
-    _game.selected_character_A = *(_characters->begin() + _active_character_a_index);
-}
-
-void MainMenuModule::prev_character_b()
-{
-    if (_active_character_b_index > 0)
-    {
-        _active_character_b_index--;
-    }
-    else
-    {
-        _active_character_b_index = (_characters->size() - 1);
-    }
-    _game.selected_character_B = *(_characters->begin() + _active_character_b_index);
-}
-
-void MainMenuModule::next_character_b()
-{
-    if (_active_character_b_index < (_characters->size() - 1))
-    {
-        _active_character_b_index++;
-    }
-    else
-    {
-        _active_character_b_index = 0;
-    }
-    _game.selected_character_B = *(_characters->begin() + _active_character_b_index);
 }
