@@ -10,7 +10,7 @@ void init_char_select(MainMenuModule *main_menu_ptr)
 {
     std::pair<float, float> ava_rect_size = {60.0f, 60.0f};
     // std::vector<std::pair<float, float>> coordinates;
-    auto SPRITE_AVATARKA = std::make_unique<sf::Sprite>();
+    std::unique_ptr<sf::Sprite> SPRITE_AVATARKA;
 
     if (!main_menu_ptr->_game.game_font.openFromFile("screens/main_menu/assets/pixel_font.ttf"))
         return;
