@@ -3,6 +3,7 @@
 #include "screens/main_menu/components/bg_select.h"
 #include "modules/character/character.h"
 #include "screens/main_menu/components/characters/characters.h"
+#include "screens/main_menu/components/character_select.h"
 #include "iostream"
 #include "cmath"
 
@@ -34,6 +35,7 @@ MainMenuModule::MainMenuModule(Game &game) : Screen(), _game(game)
 
     _characters = std::move(init_characters());
     init_bg_select(this);
+    init_char_select(this);
 };
 
 void MainMenuModule::handle_frame_signal()

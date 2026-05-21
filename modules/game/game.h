@@ -40,4 +40,5 @@ public:
     sf::Texture selected_bg;
     Character selected_character_A;
     Character selected_character_B;
+    sf::Font game_font;
 };
