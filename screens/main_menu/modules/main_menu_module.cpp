@@ -7,6 +7,7 @@
 #include "screens/main_menu/components/character_select.h"
 #include "iostream"
 #include "cmath"
+#include <algorithm>
 
 static int CHARACTERS_IN_ROW = 3;
 
