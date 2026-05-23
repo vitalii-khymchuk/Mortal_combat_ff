@@ -5,6 +5,7 @@
 #include "modules/game/game.h"
 #include <iostream>
 #include <vector>
+#include "modules/character_rect_texture/character_rect_texture.h"
 
 void init_char_select(MainMenuModule *main_menu_ptr)
 {
@@ -43,7 +44,7 @@ void init_char_select(MainMenuModule *main_menu_ptr)
         characterS.push_back(std::move(ch));
     }
 
-    std::vector<std::unique_ptr<sf::RectangleShape>> avas;
+    std::vector<std::unique_ptr<CharacterRectTexture>> avas;
     double margin_area = 400 * 260 - ava_rect_size.first * ava_rect_size.second;
     double margin0 = margin_area / (1200 + 8 * ava_rect_size.first);
 
@@ -57,33 +58,32 @@ void init_char_select(MainMenuModule *main_menu_ptr)
     {
         if (i == 0)
         {
-            avas.push_back(std::make_unique<sf::RectangleShape>(sf::Vector2f(ava_rect_size.first, ava_rect_size.second)));
+            avas.push_back(std::make_unique<CharacterRectTexture>(sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i));
 
             avas[0]->setPosition(sf::Vector2f(margin.first, 260.0f + margin.second));
             std::cout << "current square's postion -> x =" << margin.first << "  y = " << margin.second + 260.0f << std::endl;
-            avas[0]->setOutlineThickness(5.0f);
 
-            auto sprite_avatarka = std::make_unique<sf::Sprite>(characterS[i]->get_avatarka());
+            SPRITE_AVATARKA = std::make_unique<sf::Sprite>(characterS[i]->get_avatarka());
 
             sf::Vector2u avatarka_texture_size = characterS[i]->get_avatarka().getSize();
 
             float scale_x = ava_rect_size.first / avatarka_texture_size.x;
             float scale_y = ava_rect_size.second / avatarka_texture_size.y;
-            sprite_avatarka->setScale(sf::Vector2f(scale_x, scale_y));
+            SPRITE_AVATARKA->setScale(sf::Vector2f(scale_x, scale_y));
 
-            sprite_avatarka->setPosition(sf::Vector2f(margin.first, 260.0f + margin.second));
-            SPRITE_AVATARKA = std::move(sprite_avatarka);
+            SPRITE_AVATARKA->setPosition(sf::Vector2f(margin.first, 260.0f + margin.second));
 
-            if (i == 0)
-            {
-                avas[0]->setOutlineColor(sf::Color::Red);
+            // if (i == 0) // условие что выбран квадрат
+            // {
+            avas[0]->setOutlineColor(sf::Color::Red);
+            avas[0]->setOutlineThickness(5.0f);
 
-                std::string avat_n = characterS[i]->get_name();
+            std::string avat_n = characterS[i]->get_name();
 
-                selected_name_current = std::make_unique<sf::Text>(main_menu_ptr->_game.game_font, " Fighter: " + avat_n, 40);
-                selected_name_current->setFillColor(sf::Color::White);
-                selected_name_current->setPosition(select_name_pos);
-            }
+            selected_name_current = std::make_unique<CharacterNameText>(main_menu_ptr->_game.game_font, " Fighter: " + avat_n, 40);
+            selected_name_current->setFillColor(sf::Color::White);
+            selected_name_current->setPosition(select_name_pos);
+            //}
 
             continue;
         }
@@ -98,8 +98,9 @@ void init_char_select(MainMenuModule *main_menu_ptr)
             margin_act.second = 260.0f + margin.second;
             std::cout << "first row: current square's postion -> x =" << margin_act.first << "  y = " << margin_act.second << std::endl;
 
-            avas.push_back(std::make_unique<sf::RectangleShape>(sf::RectangleShape(sf::Vector2f(ava_rect_size.first, ava_rect_size.second))));
+            avas.emplace_back(sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i);
             avas[i]->setPosition(sf::Vector2f(margin_act.first, margin_act.second));
+            // selected_name_current = std::make_unique<CharacterNameText>(main_menu_ptr->_game.game_font, " Fighter: " + avat_n, 40, true);
         }
 
         else
@@ -110,7 +111,7 @@ void init_char_select(MainMenuModule *main_menu_ptr)
                 margin_act.first = margin.first;
                 margin_act.second = ava_rect_size.second + 260.0f + 2 * margin.second;
 
-                avas.push_back(std::make_unique<sf::RectangleShape>(sf::RectangleShape(sf::Vector2f(ava_rect_size.first, ava_rect_size.second))));
+                avas.emplace_back(sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i);
                 avas[i]->setPosition(sf::Vector2f(margin_act.first, margin_act.second));
 
                 std::cout << "current square's postion -> x =" << margin_act.first << "  y = " << margin_act.second << std::endl;
@@ -120,7 +121,7 @@ void init_char_select(MainMenuModule *main_menu_ptr)
             {
                 margin_act.first = pos.first + ava_rect_size.first + margin.first;
 
-                avas.push_back(std::make_unique<sf::RectangleShape>(sf::RectangleShape(sf::Vector2f(ava_rect_size.first, ava_rect_size.second))));
+                avas.emplace_back(sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i);
                 avas[i]->setPosition(sf::Vector2f(margin_act.first, margin_act.second));
 
                 std::cout << "current square's postion -> x =" << margin_act.first << "  y = " << margin_act.second << std::endl;
