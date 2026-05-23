@@ -19,7 +19,7 @@ class CharacterNameText : public sf::Text
 public:
     bool is_character_b;
 
-    CharacterNameText(const sf::Font &&font, sf::String string = "", unsigned int characterSize = 30, bool isCharacterB = false) : sf::Text(font, string, characterSize), is_character_b(isCharacterB)
+    CharacterNameText(const sf::Font &font, sf::String string = "", unsigned int characterSize = 30, bool isCharacterB = false) : sf::Text(font, string, characterSize), is_character_b(isCharacterB)
     {
     }
 

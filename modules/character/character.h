@@ -9,6 +9,8 @@ class Character
 
 public:
     Character(std::string name, sf::Texture avatar);
+    Character();
+    virtual ~Character() = default;
 
     std::string get_name()
     {
