@@ -16,7 +16,6 @@ class MainMenuModule : public Screen
     int _active_bg_index = 0;
     int _active_character_a_index = 0;
     int _active_character_b_index = 0;
-    std::unique_ptr<std::vector<Character>> _characters;
 
     void prev_bg();
     void next_bg();
@@ -27,6 +26,7 @@ class MainMenuModule : public Screen
 
 public:
     Game &_game;
+    std::unique_ptr<std::vector<Character>> _characters;
     MainMenuModule(Game &game);
     ~MainMenuModule() override = default;
     void handle_frame_signal() override;
