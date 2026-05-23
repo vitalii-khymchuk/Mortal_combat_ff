@@ -161,13 +161,13 @@ void MainMenuModule::change_character(const int &shift, int &active_index, const
     if (is_character_B)
     {
         _game.selected_character_B = (*_characters)[active_index];
-        upd_selected_rect(prev_index, active_index, is_character_B);
     }
     else
     {
         _game.selected_character_A = (*_characters)[active_index];
-        upd_selected_rect(prev_index, active_index, is_character_B);
     }
+    upd_selected_rect(prev_index, active_index, is_character_B);
+    upd_selected_char_text(active_index, is_character_B);
 }
 
 void MainMenuModule::upd_selected_rect(const int &prev_index, const int &next_index, const bool &is_character_B)
@@ -196,5 +196,21 @@ void MainMenuModule::upd_selected_rect(const int &prev_index, const int &next_in
     {
         auto *rect = dynamic_cast<CharacterRectTexture *>(new_it->get());
         rect->setOutlineColor(sf::Color::Red);
+    };
+}
+
+void MainMenuModule::upd_selected_char_text(const int &next_index, const bool &is_character_B)
+{
+    auto text_it = std::find_if(_game.shapes.begin(), _game.shapes.end(),
+                                [is_character_B](const std::unique_ptr<sf::Drawable> &p)
+                                {
+                                    CharacterNameText *rect = dynamic_cast<CharacterNameText *>(p.get());
+                                    return rect && rect->is_character_b == is_character_B;
+                                });
+
+    if (text_it != _game.shapes.end())
+    {
+        auto *text = dynamic_cast<CharacterNameText *>(text_it->get());
+        text->setString((*_characters)[next_index].get_name());
     };
 }
