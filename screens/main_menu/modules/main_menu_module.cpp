@@ -2,6 +2,7 @@
 #include "modules/game/game.h"
 #include "screens/main_menu/components/bg_select.h"
 #include "modules/character/character.h"
+#include "modules/character_rect_texture/character_rect_texture.h"
 #include "screens/main_menu/components/characters/characters.h"
 #include "screens/main_menu/components/character_select.h"
 #include "iostream"
@@ -116,7 +117,7 @@ void MainMenuModule::next_bg()
     _game.set_selected_bg(*(_bg_textures.begin() + _active_bg_index));
 }
 
-void MainMenuModule::change_character(const int &shift, int &active_index, bool is_character_B)
+void MainMenuModule::change_character(const int &shift, int &active_index, const bool &is_character_B)
 {
     if (_characters->empty())
         return;
@@ -155,13 +156,45 @@ void MainMenuModule::change_character(const int &shift, int &active_index, bool 
         new_row = wrap(current_row + row_shift, rows_in_current_column);
     }
 
+    int prev_index = active_index;
     active_index = new_row * CHARACTERS_IN_ROW + new_column;
     if (is_character_B)
     {
         _game.selected_character_B = (*_characters)[active_index];
+        upd_selected_rect(prev_index, active_index, is_character_B);
     }
     else
     {
         _game.selected_character_A = (*_characters)[active_index];
+        upd_selected_rect(prev_index, active_index, is_character_B);
     }
+}
+
+void MainMenuModule::upd_selected_rect(const int &prev_index, const int &next_index, const bool &is_character_B)
+{
+    auto old_it = std::find_if(_game.shapes.begin(), _game.shapes.end(),
+                               [prev_index, is_character_B](const std::unique_ptr<sf::Drawable> &p)
+                               {
+                                   CharacterRectTexture *rect = dynamic_cast<CharacterRectTexture *>(p.get());
+                                   return rect && rect->element_index == prev_index && rect->is_character_b == is_character_B;
+                               });
+
+    if (old_it != _game.shapes.end())
+    {
+        auto *rect = dynamic_cast<CharacterRectTexture *>(old_it->get());
+        rect->setOutlineColor(sf::Color::Transparent);
+    };
+
+    auto new_it = std::find_if(_game.shapes.begin(), _game.shapes.end(),
+                               [next_index, is_character_B](const std::unique_ptr<sf::Drawable> &p)
+                               {
+                                   CharacterRectTexture *rect = dynamic_cast<CharacterRectTexture *>(p.get());
+                                   return rect && rect->element_index == next_index && rect->is_character_b == is_character_B;
+                               });
+
+    if (new_it != _game.shapes.end())
+    {
+        auto *rect = dynamic_cast<CharacterRectTexture *>(new_it->get());
+        rect->setOutlineColor(sf::Color::Red);
+    };
 }

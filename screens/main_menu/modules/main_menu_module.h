@@ -21,7 +21,8 @@ class MainMenuModule : public Screen
     void prev_bg();
     void next_bg();
 
-    void change_character(const int &shift, int &active_index, bool is_character_B);
+    void change_character(const int &shift, int &active_index, const bool &is_character_B);
+    void upd_selected_rect(const int &prev_index, const int &next_index, const bool &is_character_B);
 
 public:
     Game &_game;
