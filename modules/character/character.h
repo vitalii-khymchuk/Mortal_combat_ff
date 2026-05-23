@@ -15,10 +15,10 @@ public:
         return _name;
     }
 
-    sf::Texture get_avatarka()
-    {
-        return _avatar;
-    }
+    // sf::Texture get_avatarka()
+    // {
+    //     return _avatar;
+    // }
 
     const sf::Texture &get_avatarka() const { return _avatar; }
 };
