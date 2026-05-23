@@ -39,54 +39,57 @@ MainMenuModule::MainMenuModule(Game &game) : Screen(), _game(game)
     init_char_select(this);
 };
 
-void MainMenuModule::handle_frame_signal()
+void MainMenuModule::handle_event(const sf::Event &event)
 {
-    while (auto event = _game._window->pollEvent())
+    if (const auto *keyPressed = event.getIf<sf::Event::KeyPressed>())
     {
-        if (event->is<sf::Event::Closed>())
-            _game._window->close();
-        if (const auto *keyPressed = event->getIf<sf::Event::KeyPressed>())
+        if (keyPressed->scancode == sf::Keyboard::Scancode::I)
         {
-            if (keyPressed->scancode == sf::Keyboard::Scancode::I)
-            {
-                prev_bg();
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::O)
-            {
-                next_bg();
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::W)
-            {
-                change_character(CHARACTERS_IN_ROW, _active_character_a_index, false);
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::A)
-            {
-                change_character(-1, _active_character_a_index, false);
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::S)
-            {
-                change_character(-CHARACTERS_IN_ROW, _active_character_a_index, false);
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::D)
-            {
-                change_character(1, _active_character_a_index, false);
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::Up)
-            {
-                change_character(CHARACTERS_IN_ROW, _active_character_b_index, true);
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::Left)
-            {
-                change_character(-1, _active_character_b_index, true);
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::Down)
-            {
-                change_character(-CHARACTERS_IN_ROW, _active_character_b_index, true);
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::Right)
-            {
-                change_character(1, _active_character_b_index, true);
-            }
+            prev_bg();
+        }
+        if (keyPressed->scancode == sf::Keyboard::Scancode::O)
+        {
+            next_bg();
+        }
+        if (keyPressed->scancode == sf::Keyboard::Scancode::W)
+        {
+            change_character(CHARACTERS_IN_ROW, _active_character_a_index, false);
+        }
+        if (keyPressed->scancode == sf::Keyboard::Scancode::A)
+        {
+            change_character(-1, _active_character_a_index, false);
+        }
+        if (keyPressed->scancode == sf::Keyboard::Scancode::S)
+        {
+            change_character(-CHARACTERS_IN_ROW, _active_character_a_index, false);
+        }
+        if (keyPressed->scancode == sf::Keyboard::Scancode::D)
+        {
+            change_character(1, _active_character_a_index, false);
+        }
+        if (keyPressed->scancode == sf::Keyboard::Scancode::Up)
+        {
+            change_character(CHARACTERS_IN_ROW, _active_character_b_index, true);
+        }
+        if (keyPressed->scancode == sf::Keyboard::Scancode::Left)
+        {
+            change_character(-1, _active_character_b_index, true);
+        }
+        if (keyPressed->scancode == sf::Keyboard::Scancode::Down)
+        {
+            change_character(-CHARACTERS_IN_ROW, _active_character_b_index, true);
+        }
+        if (keyPressed->scancode == sf::Keyboard::Scancode::Right)
+        {
+            change_character(1, _active_character_b_index, true);
+        }
+        if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
+        {
+            _game._window->close();
+        }
+        if (keyPressed->scancode == sf::Keyboard::Scancode::Enter)
+        {
+            _game.set_current_screen(CURRENT_SCREEN::MATCH);
         }
     }
 }

@@ -1,5 +1,6 @@
 #include "game.h"
 #include "screens/main_menu/main_menu.h"
+#include "screens/fight/fight.h"
 #include "modules/screen/screen.h"
 
 Game::Game(sf::RenderWindow *window)
@@ -29,13 +30,21 @@ void Game::set_current_screen(const CURRENT_SCREEN &new_screen)
 
     if (new_screen == CURRENT_SCREEN::MATCH)
     {
-        // init main match
-        // set frameTrigPtr
+        _current_screen_ptr.reset();
+        shapes.clear();
+        _current_screen_ptr = std::move(init_fight_screen(*this));
     }
 }
 
 void Game::trig_fps_signal()
 {
+    while (auto event = _window->pollEvent())
+    {
+        if (event->is<sf::Event::Closed>())
+            _window->close();
+        if (_current_screen_ptr)
+            _current_screen_ptr->handle_event(*event);
+    }
     if (_current_screen_ptr)
         _current_screen_ptr->handle_frame_signal();
 }

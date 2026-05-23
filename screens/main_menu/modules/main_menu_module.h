@@ -29,5 +29,5 @@ public:
     std::unique_ptr<std::vector<Character>> _characters;
     MainMenuModule(Game &game);
     ~MainMenuModule() override = default;
-    void handle_frame_signal() override;
+    void handle_event(const sf::Event &event) override;
 };
