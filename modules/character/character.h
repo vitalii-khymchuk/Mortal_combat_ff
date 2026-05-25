@@ -4,6 +4,7 @@
 
 class Character
 {
+
     std::string _name;
     sf::Texture _avatar;
 
@@ -18,15 +19,15 @@ public:
     Character();
     virtual ~Character() = default;
 
-    std::string get_name()
+    const std::string &get_name() const
     {
         return _name;
     }
 
-    // sf::Texture get_avatarka()
-    // {
-    //     return _avatar;
-    // }
-
     const sf::Texture &get_avatarka() const { return _avatar; }
+
+    void set_avatarka(sf::Texture &image)
+    {
+        _avatar = image;
+    }
 };
