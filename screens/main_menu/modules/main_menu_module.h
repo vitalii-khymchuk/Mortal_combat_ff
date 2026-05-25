@@ -30,4 +30,5 @@ public:
     MainMenuModule(Game &game);
     ~MainMenuModule() override = default;
     void handle_frame_signal() override;
+    std::vector<sf::Texture> _avatar_textures;
 };
