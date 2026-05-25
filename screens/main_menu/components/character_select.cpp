@@ -7,7 +7,7 @@
 #include <vector>
 #include "modules/character_rect_texture/character_rect_texture.h"
 
-void init_char_select(MainMenuModule *main_menu_ptr)
+void init_char_select(MainMenuModule *main_menu_ptr, int offset, bool isCharacterB)
 {
     int avatar_number = 6;
     std::pair<float, float> ava_rect_size = {60.0f, 60.0f};
@@ -26,19 +26,18 @@ void init_char_select(MainMenuModule *main_menu_ptr)
     entr2->setFillColor(sf::Color::White);
     entr2->setPosition(sf::Vector2f(640.0f, 560.0f));
 
-    auto selected_name_current = std::make_unique<CharacterNameText>(main_menu_ptr->_game.game_font, "", 30);
+    auto selected_name_current = std::make_unique<CharacterNameText>(main_menu_ptr->_game.game_font, "", 30, isCharacterB);
 
-    sf::Vector2f select_name_pos = {0.0f, 510.0f};
+    sf::Vector2f select_name_pos = {5.0f + static_cast<float>(offset), 510.0f};
 
     // тут должно быть подпись имен и функция которая выбирает аватара (берет в рамку)
-    auto selected_name_current2 = std::make_unique<CharacterNameText>(main_menu_ptr->_game.game_font, "", 30);
+    // auto selected_name_current2 = std::make_unique<CharacterNameText>(main_menu_ptr->_game.game_font, "", 30);
 
-    sf::Vector2f select_name2_pos = {400.0f, 510.0f};
+    // sf::Vector2f select_name2_pos = {400.0f + offset, 510.0f};
 
     std::vector<Character> &characterS = *(main_menu_ptr->_characters);
 
     // вектор з спрайтами з картинок з масива characterS.
-
     std::vector<std::unique_ptr<sf::Sprite>> avatarki;
 
     for (const auto &character : characterS)
@@ -47,31 +46,29 @@ void init_char_select(MainMenuModule *main_menu_ptr)
         avatarki.emplace_back(std::move(sprite));
     }
 
-    std::vector<std::unique_ptr<CharacterRectTexture>>
-        avas;
+    std::vector<std::unique_ptr<CharacterRectTexture>> avas;
     double margin_area = 400 * 260 - ava_rect_size.first * ava_rect_size.second;
     double margin0 = margin_area / (1200 + 8 * ava_rect_size.first);
 
-    std::pair<float, float> margin = {margin0, margin0 * 0.8};
+    std::pair<float, float> margin = {static_cast<float>(margin0), static_cast<float>(margin0 * 0.8)};
 
-    // считаем количество рядов
-
-    std::pair<float, float> margin_act = margin;
+    std::pair<float, float> margin_act = {margin.first + static_cast<float>(offset), margin.second};
     bool isFirstRow = true;
 
     for (int i = 0; i < characterS.size(); i++)
     {
-
         if (i == 0)
         {
             avas.emplace_back(std::make_unique<CharacterRectTexture>(
-                sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i));
+                sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i, isCharacterB));
 
             avas[0]->setFillColor(sf::Color::Transparent);
 
-            avas[0]->setPosition(sf::Vector2f(margin.first, 260.0f + margin.second));
+            avas[0]->setPosition(sf::Vector2f(margin.first + static_cast<float>(offset), 260.0f + margin.second));
 
-            std::cout << "current square's postion -> x =" << margin.first << "  y = " << margin.second + 260.0f << std::endl;
+            std::cout << "current square's postion -> x =" << margin.first + static_cast<float>(offset)
+                      << " y = " << margin.second + 260.0f << std::endl;
+
             // добавляем аватарки персонажей
             sf::Vector2u avatarka_texture_size = characterS[i].get_avatarka().getSize();
 
@@ -79,7 +76,7 @@ void init_char_select(MainMenuModule *main_menu_ptr)
             float scale_y = ava_rect_size.second / avatarka_texture_size.y;
 
             avatarki[i]->setScale(sf::Vector2f(scale_x, scale_y));
-            avatarki[i]->setPosition(sf::Vector2f(margin.first, 260.0f + margin.second));
+            avatarki[i]->setPosition(sf::Vector2f(margin.first + static_cast<float>(offset), 260.0f + margin.second));
             //
 
             avas[0]->setOutlineColor(sf::Color::Red);
@@ -87,25 +84,24 @@ void init_char_select(MainMenuModule *main_menu_ptr)
 
             std::string avat_n = characterS[i].get_name();
 
-            selected_name_current = std::make_unique<CharacterNameText>(main_menu_ptr->_game.game_font, " Fighter: " + avat_n, 40);
+            selected_name_current = std::make_unique<CharacterNameText>(main_menu_ptr->_game.game_font, " Fighter: " + avat_n, 40, isCharacterB);
             selected_name_current->setFillColor(sf::Color::White);
             selected_name_current->setPosition(select_name_pos);
 
             continue;
         }
-
         sf::Vector2f vec_pos = avas[i - 1]->getPosition();
         std::pair<float, float> pos = {vec_pos.x, vec_pos.y};
 
-        if (margin_act.first + 2 * ava_rect_size.first < 400 && isFirstRow)
+        if (margin_act.first - static_cast<float>(offset) + 2 * ava_rect_size.first < 400 && isFirstRow)
         {
-
             margin_act.first = pos.first + ava_rect_size.first + margin.first;
             margin_act.second = 260.0f + margin.second;
-            std::cout << "first row: current square's postion -> x =" << margin_act.first << "  y = " << margin_act.second << std::endl;
+            std::cout << "first row: current square's postion -> x =" << margin_act.first
+                      << " y = " << margin_act.second << std::endl;
 
             avas.emplace_back(std::make_unique<CharacterRectTexture>(
-                sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i));
+                sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i, isCharacterB));
             avas[i]->setPosition(sf::Vector2f(margin_act.first, margin_act.second));
 
             // добавляем аватарки персонажей
@@ -120,17 +116,17 @@ void init_char_select(MainMenuModule *main_menu_ptr)
 
             // selected_name_current = std::make_unique<CharacterNameText>(main_menu_ptr->_game.game_font, " Fighter: " + avat_n, 40, true);
         }
-
         else
         {
             if (isFirstRow)
             {
                 isFirstRow = false;
-                margin_act.first = margin.first;
+
+                margin_act.first = margin.first + static_cast<float>(offset);
                 margin_act.second = ava_rect_size.second + 260.0f + 2 * margin.second;
 
                 avas.emplace_back(std::make_unique<CharacterRectTexture>(
-                    sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i));
+                    sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i, isCharacterB));
                 avas[i]->setPosition(sf::Vector2f(margin_act.first, margin_act.second));
 
                 // добавляем аватарки персонажей
@@ -143,15 +139,15 @@ void init_char_select(MainMenuModule *main_menu_ptr)
                 avatarki[i]->setPosition(sf::Vector2f(margin_act.first, margin_act.second));
                 //
 
-                std::cout << "current square's postion -> x =" << margin_act.first << "  y = " << margin_act.second << std::endl;
+                std::cout << "current square's postion -> x =" << margin_act.first
+                          << " y = " << margin_act.second << std::endl;
             }
-
             else
             {
                 margin_act.first = pos.first + ava_rect_size.first + margin.first;
 
                 avas.emplace_back(std::make_unique<CharacterRectTexture>(
-                    sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i));
+                    sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i, isCharacterB));
                 avas[i]->setPosition(sf::Vector2f(margin_act.first, margin_act.second));
 
                 // добавляем аватарки персонажей
@@ -164,56 +160,14 @@ void init_char_select(MainMenuModule *main_menu_ptr)
                 avatarki[i]->setPosition(sf::Vector2f(margin_act.first, margin_act.second));
                 //
 
-                std::cout << "current square's postion -> x =" << margin_act.first << "  y = " << margin_act.second << std::endl;
+                std::cout << "current square's postion -> x =" << margin_act.first
+                          << " y = " << margin_act.second << std::endl;
             }
         }
+
         avas[i]->setOutlineThickness(5.0f);
         avas[i]->setOutlineColor(sf::Color::Transparent);
     }
-
-    // создаем второй вектор  картинок для правого играка
-    std::vector<sf::Sprite> avatarki_right;
-
-    for (int i = 0; i < avatarki.size(); i++)
-    {
-        avatarki_right.emplace_back(*avatarki[i]); // копируем sf::Sprite
-
-        sf::Vector2f position_left = avatarki[i]->getPosition();
-        avatarki_right[i].setPosition(sf::Vector2f(position_left.x + 400, position_left.y));
-    }
-    std::vector<std::unique_ptr<sf::Sprite>> avatarki2;
-
-    for (const auto &ava : avatarki_right)
-    {
-        avatarki2.emplace_back(std::make_unique<sf::Sprite>(ava));
-    }
-
-    // создаем второй вектор  квадратов для правого играка
-    std::vector<CharacterRectTexture> avas_right;
-
-    for (int i = 0; i < avas.size(); i++)
-    {
-        avas_right.emplace_back(*avas[i]); // копируем sf::Sprite
-
-        sf::Vector2f position_left = avas[i]->getPosition();
-        avas_right[i].setPosition(sf::Vector2f(position_left.x + 400, position_left.y));
-        if (i == 0)
-        {
-            std::string avat_n = characterS[i].get_name();
-            selected_name_current2 = std::make_unique<CharacterNameText>(main_menu_ptr->_game.game_font, " Fighter: " + avat_n, 40);
-            selected_name_current2->setFillColor(sf::Color::White);
-            selected_name_current2->setPosition(select_name_pos);
-        }
-    }
-    std::vector<std::unique_ptr<CharacterRectTexture>> avas2;
-
-    for (const auto &ava : avas_right)
-    {
-        avas2.emplace_back(std::make_unique<CharacterRectTexture>(ava));
-    }
-    ///
-
-    ///
 
     main_menu_ptr->_game.shapes.emplace_back(std::move(esc1));
     main_menu_ptr->_game.shapes.emplace_back(std::move(entr2));
@@ -235,21 +189,10 @@ void init_char_select(MainMenuModule *main_menu_ptr)
         main_menu_ptr->_game.shapes.emplace_back(std::move(avas[i]));
     }
 
-    for (int i = 0; i < avas2.size(); i++)
-    {
-        main_menu_ptr->_game.shapes.emplace_back(std::move(avas2[i]));
-    }
-
     for (int i = 0; i < avatarki.size(); i++)
     {
         main_menu_ptr->_game.shapes.emplace_back(std::move(avatarki[i]));
     }
 
-    for (int i = 0; i < avatarki2.size(); i++)
-    {
-        main_menu_ptr->_game.shapes.emplace_back(std::move(avatarki2[i]));
-    }
-
     main_menu_ptr->_game.shapes.emplace_back(std::move(selected_name_current));
-    // main_menu_ptr->_game.shapes.emplace_back(std::move(selected_name_current2));
 }

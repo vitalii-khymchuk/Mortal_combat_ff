@@ -37,7 +37,8 @@ MainMenuModule::MainMenuModule(Game &game) : Screen(), _game(game)
 
     _characters = std::move(init_characters());
     init_bg_select(this);
-    init_char_select(this);
+    init_char_select(this, 0, false);
+    init_char_select(this, 400, true);
 };
 
 void MainMenuModule::handle_frame_signal()
@@ -212,6 +213,7 @@ void MainMenuModule::upd_selected_char_text(const int &next_index, const bool &i
     if (text_it != _game.shapes.end())
     {
         auto *text = dynamic_cast<CharacterNameText *>(text_it->get());
-        text->setString((*_characters)[next_index].get_name());
+        std::string msg = "Fighter: " + (*_characters)[next_index].get_name();
+        text->setString(msg);
     };
 }
