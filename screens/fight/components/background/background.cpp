@@ -21,5 +21,5 @@ void init_background(FightModule *fight_module_ptr)
     bg->setPosition(sf::Vector2f(0.f, 0.f));
     bg->setScale(sf::Vector2f(scale_x, scale_y));
 
-    fight_module_ptr->_game.shapes.emplace_back(std::move(bg));
+    fight_module_ptr->_game.shapes.emplace(fight_module_ptr->_game.shapes.begin(), std::move(bg));
 }

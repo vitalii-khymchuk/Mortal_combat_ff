@@ -2,6 +2,7 @@
 #include "screens/main_menu/main_menu.h"
 #include "screens/fight/fight.h"
 #include "modules/screen/screen.h"
+#include <iostream>
 
 Game::Game(sf::RenderWindow *window)
 {

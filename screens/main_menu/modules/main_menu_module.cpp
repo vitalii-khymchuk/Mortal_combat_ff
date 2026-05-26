@@ -36,6 +36,8 @@ MainMenuModule::MainMenuModule(Game &game) : Screen(), _game(game)
     };
 
     _characters = std::move(init_characters());
+    _game.selected_character_A = (*_characters)[0];
+    _game.selected_character_B = (*_characters)[0];
     init_bg_select(this);
     init_char_select(this, 0, false);
     init_char_select(this, 400, true);
