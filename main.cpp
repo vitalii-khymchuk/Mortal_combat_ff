@@ -1,11 +1,12 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "modules/game/game.h"
+#include "modules/constants/constants.h"
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(sf::Vector2u(800, 600)), "My window");
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(GAME_FPS);
     Game game(&window);
 
     while (window.isOpen())

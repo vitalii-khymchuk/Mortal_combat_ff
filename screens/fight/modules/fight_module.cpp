@@ -6,8 +6,8 @@
 FightModule::FightModule(Game &game)
     : Screen(),
       _game(game),
-      player_A(*this, game.selected_character_A, 100, 200, false),
-      player_B(*this, game.selected_character_B, 450, 200, true)
+      player_A(*this, game.selected_character_A, 150, 400, false),
+      player_B(*this, game.selected_character_B, 650, 400, true)
 {
     init_background(this);
 }
@@ -19,6 +19,26 @@ void FightModule::handle_event(const sf::Event &event)
         if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
         {
             _game._window->close();
+        }
+    }
+
+    if (const auto *keyReleased = event.getIf<sf::Event::KeyReleased>())
+    {
+        auto keycode = keyReleased->scancode;
+        if (keycode == sf::Keyboard::Scancode::W ||
+            keycode == sf::Keyboard::Scancode::A ||
+            keycode == sf::Keyboard::Scancode::S ||
+            keycode == sf::Keyboard::Scancode::D)
+        {
+            player_A.reset_animation();
+        }
+
+        if (keycode == sf::Keyboard::Scancode::Up ||
+            keycode == sf::Keyboard::Scancode::Left ||
+            keycode == sf::Keyboard::Scancode::Down ||
+            keycode == sf::Keyboard::Scancode::Right)
+        {
+            player_B.reset_animation();
         }
     }
 

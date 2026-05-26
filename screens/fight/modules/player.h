@@ -18,9 +18,10 @@ class Player
     const std::vector<sf::IntRect> *_active_sprite_frames = nullptr;
 
     void _check_ground();
+    void mirror_sprite(bool is_mirrored);
 
 public:
-    int _pos_x, _pos_y;
+    float _pos_x, _pos_y;
 
     Player(FightModule &fight_module, Character &character, const int &init_pos_x, const int &init_pos_y, const bool is_right_character);
     ~Player() = default;
@@ -28,6 +29,7 @@ public:
     void move_left();
     void move_right();
     void jump();
+    void reset_animation();
     void animate();
     void select_sprite(const sf::Texture &texture, const std::vector<sf::IntRect> &active_sprite_frames);
 };

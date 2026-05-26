@@ -20,32 +20,38 @@ Player::Player(FightModule &fight_module,
     _fight_module._game.shapes.emplace_back(std::move(character_ptr));
 
     _active_sprite->setPosition(sf::Vector2f(_pos_x, _pos_y));
-
-    auto bounds = _active_sprite->getGlobalBounds().size;
-    std::cout << "Size: " << bounds.x << " x " << bounds.y << std::endl;
-
-    auto texture = character.get_textures()._walk_texture.getSize();
-    std::cout << "Texture size: " << texture.x << " x " << texture.y << std::endl;
+    _active_sprite->setTextureRect((*_active_sprite_frames)[0]);
+    float scale_factor = character.get_specs()._size_scale;
+    _active_sprite->setScale(sf::Vector2f(scale_factor, scale_factor));
+    sf::FloatRect bounds = _active_sprite->getLocalBounds();
+    _active_sprite->setOrigin(sf::Vector2f(bounds.size.x / 2.f, bounds.size.y / 2.f));
+    if (is_right_character)
+    {
+        mirror_sprite(true);
+    }
 };
 
 void Player::move_left()
 {
-    _is_running_left = true;
-    // if (_active_sprite_frames != _walk_texture_frames)
-    // {
-    //     select_sprite(_walk_texture, _walk_texture_frames);
-    // }
-
-    // std::cout << " press left" << std::endl;
+    if (!_is_running_left)
+    {
+        mirror_sprite(true);
+        _is_running_left = true;
+    }
+    _pos_x -= ((1.00f / GAME_FPS) * _character.get_specs()._x_speed_max);
+    _active_sprite->setPosition(sf::Vector2f(_pos_x, _pos_y));
+    animate();
 };
 void Player::move_right()
 {
-    _is_running_left = false;
-    // if (_active_sprite_frames != _walk_texture_frames)
-    // {
-    //     select_sprite(_walk_texture, _walk_texture_frames);
-    // }
-    // std::cout << " press right" << std::endl;
+    if (_is_running_left)
+    {
+        mirror_sprite(false);
+        _is_running_left = false;
+    }
+    _pos_x += ((1.00f / GAME_FPS) * _character.get_specs()._x_speed_max);
+    _active_sprite->setPosition(sf::Vector2f(_pos_x, _pos_y));
+    animate();
 };
 
 void Player::jump() {};
@@ -75,5 +81,21 @@ void Player::select_sprite(const sf::Texture &texture, const std::vector<sf::Int
 
 void Player::handle_fps_signal()
 {
-    animate();
+    // animate();
+}
+
+void Player::reset_animation()
+{
+    _current_frame_ = 0;
+    _active_sprite->setTextureRect((*_active_sprite_frames)[0]);
+};
+
+void Player::mirror_sprite(bool is_mirrored)
+{
+    float scale_factor = _character.get_specs()._size_scale;
+    if (is_mirrored)
+
+        _active_sprite->setScale(sf::Vector2f(-scale_factor, scale_factor));
+    else
+        _active_sprite->setScale(sf::Vector2f(scale_factor, scale_factor));
 }

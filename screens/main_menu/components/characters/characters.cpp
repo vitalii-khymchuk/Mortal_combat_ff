@@ -28,7 +28,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
     walk_texture_frames.push_back(sf::IntRect({1175, 0}, {142, 192})); // hero running frame 8
     walk_texture_frames.push_back(sf::IntRect({1345, 0}, {147, 194})); // hero running frame 9
 
-    characters->emplace_back("Joko", avatar1, walk_texture, walk_texture_frames);
+    characters->emplace_back("Joko", avatar1, 600, 0.7, walk_texture, walk_texture_frames);
 
     sf::Texture avatar2;
     if (!avatar2.loadFromFile("screens/main_menu/components/characters/jojo/avatar2.jpg"))
@@ -36,7 +36,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
         throw std::runtime_error("Jojo avatar load failed");
     }
 
-    characters->emplace_back("Jojo", std::move(avatar2));
+    characters->emplace_back("Jojo", std::move(avatar2), 300, 1);
 
     sf::Texture avatar3;
     if (!avatar3.loadFromFile("screens/main_menu/components/characters/jola/avatar3.png"))
@@ -44,7 +44,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
         throw std::runtime_error("Jola avatar load failed");
     }
 
-    characters->emplace_back("Jola", std::move(avatar3));
+    characters->emplace_back("Jola", std::move(avatar3), 200, 1);
 
     sf::Texture avatar4;
     if (!avatar4.loadFromFile("screens/main_menu/components/characters/joma/avatar4.jpg"))
@@ -52,7 +52,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
         throw std::runtime_error("Joma avatar load failed");
     }
 
-    characters->emplace_back("Joma", std::move(avatar4));
+    characters->emplace_back("Joma", std::move(avatar4), 200, 1);
 
     sf::Texture avatar5;
     if (!avatar5.loadFromFile("screens/main_menu/components/characters/lana/avatr5.jpg"))
@@ -60,7 +60,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
         throw std::runtime_error("Lana avatar load failed");
     }
 
-    characters->emplace_back("Lana", std::move(avatar5));
+    characters->emplace_back("Lana", std::move(avatar5), 200, 1);
 
     sf::Texture avatar6;
     if (!avatar6.loadFromFile("screens/main_menu/components/characters/nala/avatar6.png"))
@@ -68,6 +68,6 @@ std::unique_ptr<std::vector<Character>> init_characters()
         throw std::runtime_error("Nala avatar load failed");
     }
 
-    characters->emplace_back("Nala", std::move(avatar6));
+    characters->emplace_back("Nala", std::move(avatar6), 200, 1);
     return characters;
 };
