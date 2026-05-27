@@ -14,12 +14,17 @@ class Player
     float _y_speed = 0;
     int _current_frame_ = 0;
     bool _is_falling = true;
+    bool _can_move_left = true;
+    bool _can_move_right = true;
     bool _is_running_left = false;
+    bool _is_player_B = false;
     CharacterFightSprite *_active_sprite = nullptr;
     const std::vector<sf::IntRect> *_active_sprite_frames = nullptr;
 
-    void _check_ground();
+    void check_ground();
+    void check_edges();
     void handle_falling();
+    bool is_in_contact_with_opponent(int test_pos_x, int test_pos_y, bool unlock_x_on_opponent) const;
     void mirror_sprite(bool is_mirrored);
 
 public:
