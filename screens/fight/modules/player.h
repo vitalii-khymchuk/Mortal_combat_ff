@@ -8,6 +8,7 @@ class Player
     Character &_character;
     FightModule &_fight_module;
     sf::Clock _animation_clock;
+    sf::Clock _gravity_clock;
     int _hp_percents = 100;
 
     float _y_speed = 0;
@@ -18,6 +19,7 @@ class Player
     const std::vector<sf::IntRect> *_active_sprite_frames = nullptr;
 
     void _check_ground();
+    void handle_falling();
     void mirror_sprite(bool is_mirrored);
 
 public:

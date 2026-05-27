@@ -81,7 +81,7 @@ void Player::select_sprite(const sf::Texture &texture, const std::vector<sf::Int
 
 void Player::handle_fps_signal()
 {
-    // animate();
+    handle_falling();
 }
 
 void Player::reset_animation()
@@ -98,4 +98,28 @@ void Player::mirror_sprite(bool is_mirrored)
         _active_sprite->setScale(sf::Vector2f(-scale_factor, scale_factor));
     else
         _active_sprite->setScale(sf::Vector2f(scale_factor, scale_factor));
+}
+
+void Player::handle_falling()
+{
+
+    if (!_is_falling)
+    {
+        if (_y_speed != 0)
+        {
+            _gravity_clock.stop();
+            _gravity_clock.reset();
+            _y_speed = 0;
+            reset_animation();
+        }
+        return;
+    }
+
+    sf::Time elapsed = _gravity_clock.getElapsedTime();
+    float fallingTime = elapsed.asSeconds();
+
+    _y_speed += G_FORCE_PIXELS_PER_SEC_SQUARE * fallingTime;
+    sf::Vector2f pos = _active_sprite->getPosition();
+    _active_sprite->setPosition(sf::Vector2f(pos.x, pos.y + (1.00f / GAME_FPS) * _y_speed));
+    _gravity_clock.restart();
 }

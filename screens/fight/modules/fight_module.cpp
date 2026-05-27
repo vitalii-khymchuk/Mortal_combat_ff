@@ -6,8 +6,8 @@
 FightModule::FightModule(Game &game)
     : Screen(),
       _game(game),
-      player_A(*this, game.selected_character_A, 150, 400, false),
-      player_B(*this, game.selected_character_B, 650, 400, true)
+      player_A(*this, game.selected_character_A, 150, 100, false),
+      player_B(*this, game.selected_character_B, 650, 100, true)
 {
     init_background(this);
 }
