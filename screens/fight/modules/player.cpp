@@ -22,10 +22,17 @@ Player::Player(FightModule &fight_module,
 
     _active_sprite->setPosition(sf::Vector2f(_pos_x, _pos_y));
     _active_sprite->setTextureRect((*_active_sprite_frames)[0]);
-    float scale_factor = character.get_specs()._size_scale;
-    _active_sprite->setScale(sf::Vector2f(scale_factor, scale_factor));
     sf::FloatRect bounds = _active_sprite->getLocalBounds();
-    _active_sprite->setOrigin(sf::Vector2f(bounds.size.x / 2.f, bounds.size.y / 2.f));
+    _active_sprite->setOrigin(sf::Vector2f(bounds.size.x / 2.f, bounds.size.y));
+
+    // int sprite_height = _active_sprite->getGlobalBounds().size.y;
+    float scale_factor = character.get_specs()._height_px / bounds.size.y;
+    _active_sprite->setScale(sf::Vector2f(scale_factor, scale_factor));
+
+    std::cout << "CONSTRUCTOR" << std::endl;
+    std::cout << "character y: " << character.get_specs()._height_px << std::endl;
+    std::cout << "bounds.size.y: " << bounds.size.y << std::endl;
+    std::cout << "scale_factor: " << scale_factor << std::endl;
     if (is_right_character)
     {
         mirror_sprite(true);
@@ -141,17 +148,33 @@ void Player::animate()
         _animation_clock.restart();
     }
 }
-
 void Player::select_sprite(const sf::Texture &texture, const std::vector<sf::IntRect> &active_sprite_frames)
 {
+    bool was_texture_updated = false;
     if (&active_sprite_frames != _active_sprite_frames)
     {
         _active_sprite->setTexture(texture);
         _active_sprite_frames = &active_sprite_frames;
+        was_texture_updated = true;
     }
+
     _current_frame_ = 0;
     _active_sprite->setTextureRect((*_active_sprite_frames)[0]);
-};
+
+    sf::FloatRect bounds = _active_sprite->getLocalBounds();
+    _active_sprite->setOrigin(sf::Vector2f(bounds.size.x / 2.f, bounds.size.y / 2.f));
+
+    if (was_texture_updated)
+    {
+        float sprite_height = bounds.size.y;
+        float scale_factor = _character.get_specs()._height_px / sprite_height;
+
+        float sign_x = (_active_sprite->getScale().x < 0.f) ? -1.f : 1.f;
+        _active_sprite->setScale(sf::Vector2f(sign_x * scale_factor, scale_factor));
+    }
+
+    _active_sprite->setPosition(sf::Vector2f(_pos_x, _pos_y));
+}
 
 void Player::reset_animation()
 {
@@ -182,7 +205,7 @@ void Player::handle_fps_signal()
 
 void Player::mirror_sprite(bool is_mirrored)
 {
-    float scale_factor = _character.get_specs()._size_scale;
+    float scale_factor = _active_sprite->getScale().y;
     if (is_mirrored)
 
         _active_sprite->setScale(sf::Vector2f(-scale_factor, scale_factor));
@@ -270,8 +293,8 @@ bool Player::is_in_contact_with_opponent(int test_pos_x, int test_pos_y, bool un
     float my_top = test_pos_y;
     float my_bottom = test_pos_y + my_size.y;
 
-    float opp_left = opponent._pos_x - opp_size.x / 2.f + INTERACTION_DISTANCE_PX * 2;
-    float opp_right = opponent._pos_x + opp_size.x / 2.f - INTERACTION_DISTANCE_PX * 2;
+    float opp_left = opponent._pos_x - opp_size.x / 2.f + INTERACTION_DISTANCE_PX;
+    float opp_right = opponent._pos_x + opp_size.x / 2.f - INTERACTION_DISTANCE_PX;
     float opp_top = opponent._pos_y;
     float opp_bottom = opponent._pos_y + opp_size.y;
 

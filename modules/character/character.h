@@ -7,7 +7,7 @@ struct specs
 {
     int _x_speed_max;
     float _weight_factor;
-    float _size_scale;
+    float _height_px;
 };
 
 struct textures
@@ -29,7 +29,7 @@ class Character
 protected:
     int _x_speed_max = 20;
     float _weight_factor = 0.5;
-    float _size_scale;
+    float _height_px;
     sf::Texture _walk_texture;
     std::vector<sf::IntRect> _walk_texture_frames;
     sf::Texture _hand_kick_texture;
@@ -41,7 +41,7 @@ public:
     Character(std::string name,
               const sf::Texture &avatar,
               int x_speed_max = 10,
-              float size_scale = 1,
+              int height_px = 100,
               const sf::Texture walk_texture = sf::Texture(),
               std::vector<sf::IntRect> walk_texture_frames = std::vector<sf::IntRect>(),
               sf::Texture _jump_texture = sf::Texture(),
@@ -65,11 +65,10 @@ public:
 
     specs get_specs()
     {
-        return {_x_speed_max, _weight_factor, _size_scale};
+        return {_x_speed_max, _weight_factor, _height_px};
     };
     textures get_textures()
     {
-
         return {_walk_texture, _walk_texture_frames, _hand_kick_texture, _hand_kick_texture_frames, _jump_texture, _jump_texture_frames};
     };
 };

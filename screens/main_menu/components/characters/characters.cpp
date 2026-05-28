@@ -53,7 +53,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
     hand_kick_texture_frames.push_back(sf::IntRect({950, 0}, {322, 331}));  // hero frame 4
     hand_kick_texture_frames.push_back(sf::IntRect({1380, 0}, {207, 331})); // hero frame 5
 
-    characters->emplace_back("Joko", avatar1, 600, 0.7, walk_texture, walk_texture_frames, jump_texture, jump_texture_frames, hand_kick_texture, hand_kick_texture_frames);
+    characters->emplace_back("Joko", avatar1, 600, 100, walk_texture, walk_texture_frames, jump_texture, jump_texture_frames, hand_kick_texture, hand_kick_texture_frames);
 
     sf::Texture avatar2;
     if (!avatar2.loadFromFile("screens/main_menu/components/characters/jojo/avatar2.jpg"))

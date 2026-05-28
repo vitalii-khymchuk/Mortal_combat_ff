@@ -84,6 +84,11 @@ void FightModule::handle_event(const sf::Event &event)
     {
         player_B.move_right();
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Comma) && event.getIf<sf::Event::KeyPressed>())
+    {
+        player_B.hand_kick();
+    }
 }
 
 void FightModule::handle_frame_signal()
