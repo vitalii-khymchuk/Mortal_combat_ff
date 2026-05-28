@@ -39,6 +39,11 @@ void Player::move_left()
         mirror_sprite(true);
         _is_running_left = true;
     }
+    textures c_textures = _character.get_textures();
+    if (&c_textures._walk_texture_frames != _active_sprite_frames)
+    {
+        reset_animation();
+    }
     animate();
     check_edges();
     if (_can_move_left)
@@ -54,6 +59,11 @@ void Player::move_right()
         mirror_sprite(false);
         _is_running_left = false;
     }
+    textures c_textures = _character.get_textures();
+    if (&c_textures._walk_texture_frames != _active_sprite_frames)
+    {
+        reset_animation();
+    }
     animate();
     check_edges();
     if (_can_move_right)
@@ -67,9 +77,20 @@ void Player::jump()
 {
     if (!_is_falling)
     {
+        textures c_textures = _character.get_textures();
+        select_sprite(c_textures._jump_texture, c_textures._jump_texture_frames);
         _y_speed = -400;
         _is_falling = true;
+        _animation_loop_playing = true;
     }
+};
+
+void Player::hand_kick()
+{
+    textures c_textures = _character.get_textures();
+    select_sprite(c_textures._hand_kick_texture, c_textures._hand_kick_texture_frames);
+    _animation_loop_playing = true;
+    // implement hp mechanic
 };
 
 void Player::check_ground()
@@ -103,38 +124,61 @@ void Player::check_ground()
 
 void Player::animate()
 {
-    _active_sprite->setTextureRect((*_active_sprite_frames)[_current_frame_]);
     _animation_clock.start();
     sf::Time elapsed = _animation_clock.getElapsedTime();
     float frameTime = elapsed.asSeconds();
+
     if (frameTime >= (1.00f / ANIMATION_SPEED_FPS))
     {
         _current_frame_++;
+
+        if (_current_frame_ >= _active_sprite_frames->size())
+        {
+            _current_frame_ = 0;
+        }
+
+        _active_sprite->setTextureRect((*_active_sprite_frames)[_current_frame_]);
         _animation_clock.restart();
-    }
-    if (_current_frame_ >= _active_sprite_frames->size())
-    {
-        _current_frame_ = 0;
     }
 }
 
 void Player::select_sprite(const sf::Texture &texture, const std::vector<sf::IntRect> &active_sprite_frames)
 {
-    _active_sprite->setTexture(texture);
-    _active_sprite_frames = &active_sprite_frames;
+    if (&active_sprite_frames != _active_sprite_frames)
+    {
+        _active_sprite->setTexture(texture);
+        _active_sprite_frames = &active_sprite_frames;
+    }
+    _current_frame_ = 0;
+    _active_sprite->setTextureRect((*_active_sprite_frames)[0]);
+};
+
+void Player::reset_animation()
+{
+    textures c_textures = _character.get_textures();
+    select_sprite(c_textures._walk_texture, c_textures._walk_texture_frames);
 };
 
 void Player::handle_fps_signal()
 {
     check_ground();
     handle_falling();
-}
 
-void Player::reset_animation()
-{
-    _current_frame_ = 0;
-    _active_sprite->setTextureRect((*_active_sprite_frames)[0]);
-};
+    // automation for loop animation
+    if (_animation_loop_playing)
+    {
+        int last_frame = _active_sprite_frames->size() - 1;
+
+        if (_current_frame_ < last_frame)
+        {
+            animate();
+        }
+        else
+        {
+            _animation_loop_playing = false;
+        }
+    }
+}
 
 void Player::mirror_sprite(bool is_mirrored)
 {
@@ -156,7 +200,9 @@ void Player::handle_falling()
             _gravity_clock.stop();
             _gravity_clock.reset();
             _y_speed = 0;
-            reset_animation();
+            // reset_animation();
+            textures c_textures = _character.get_textures();
+            select_sprite(c_textures._walk_texture, c_textures._walk_texture_frames);
         }
         return;
     }

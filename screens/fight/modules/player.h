@@ -18,6 +18,7 @@ class Player
     bool _can_move_right = true;
     bool _is_running_left = false;
     bool _is_player_B = false;
+    bool _animation_loop_playing = false;
     CharacterFightSprite *_active_sprite = nullptr;
     const std::vector<sf::IntRect> *_active_sprite_frames = nullptr;
 
@@ -36,6 +37,7 @@ public:
     void move_left();
     void move_right();
     void jump();
+    void hand_kick();
     void reset_animation();
     void animate();
     void select_sprite(const sf::Texture &texture, const std::vector<sf::IntRect> &active_sprite_frames);

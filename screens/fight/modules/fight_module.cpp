@@ -25,16 +25,14 @@ void FightModule::handle_event(const sf::Event &event)
     if (const auto *keyReleased = event.getIf<sf::Event::KeyReleased>())
     {
         auto keycode = keyReleased->scancode;
-        if (keycode == sf::Keyboard::Scancode::W ||
-            keycode == sf::Keyboard::Scancode::A ||
+        if (keycode == sf::Keyboard::Scancode::A ||
             keycode == sf::Keyboard::Scancode::S ||
             keycode == sf::Keyboard::Scancode::D)
         {
             player_A.reset_animation();
         }
 
-        if (keycode == sf::Keyboard::Scancode::Up ||
-            keycode == sf::Keyboard::Scancode::Left ||
+        if (keycode == sf::Keyboard::Scancode::Left ||
             keycode == sf::Keyboard::Scancode::Down ||
             keycode == sf::Keyboard::Scancode::Right)
         {
@@ -60,6 +58,11 @@ void FightModule::handle_event(const sf::Event &event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D) && event.getIf<sf::Event::KeyPressed>())
     {
         player_A.move_right();
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::R) && event.getIf<sf::Event::KeyPressed>())
+    {
+        player_A.hand_kick();
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Up) && event.getIf<sf::Event::KeyPressed>())
