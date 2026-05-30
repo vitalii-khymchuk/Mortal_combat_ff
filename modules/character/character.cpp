@@ -9,7 +9,11 @@ Character::Character(std::string name,
                      sf::Texture jump_texture,
                      std::vector<sf::IntRect> jump_texture_frames,
                      const sf::Texture hand_kick_texture,
-                     std::vector<sf::IntRect> hand_kick_texture_frames)
+                     std::vector<sf::IntRect> hand_kick_texture_frames,
+                     const sf::Texture leg_kick_texture,
+                     std::vector<sf::IntRect> leg_kick_texture_frames,
+                     const sf::Texture block_texture,
+                     std::vector<sf::IntRect> block_texture_frames)
     : _name(name),
       _avatar(avatar),
       _walk_texture(walk_texture),
@@ -18,6 +22,10 @@ Character::Character(std::string name,
       _hand_kick_texture(hand_kick_texture),
       _walk_texture_frames(walk_texture_frames),
       _hand_kick_texture_frames(hand_kick_texture_frames),
+      _leg_kick_texture(leg_kick_texture),
+      _leg_kick_texture_frames(leg_kick_texture_frames),
+      _block_texture(block_texture),
+      _block_texture_frames(block_texture_frames),
       _x_speed_max(x_speed_max),
       _height_px(height_px) {};
 Character::Character() : _name(""), _avatar(sf::Texture()), _walk_texture(sf::Texture()), _hand_kick_texture(sf::Texture()) {};

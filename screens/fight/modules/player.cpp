@@ -29,10 +29,6 @@ Player::Player(FightModule &fight_module,
     float scale_factor = character.get_specs()._height_px / bounds.size.y;
     _active_sprite->setScale(sf::Vector2f(scale_factor, scale_factor));
 
-    std::cout << "CONSTRUCTOR" << std::endl;
-    std::cout << "character y: " << character.get_specs()._height_px << std::endl;
-    std::cout << "bounds.size.y: " << bounds.size.y << std::endl;
-    std::cout << "scale_factor: " << scale_factor << std::endl;
     if (is_right_character)
     {
         mirror_sprite(true);
@@ -100,6 +96,25 @@ void Player::hand_kick()
     // implement hp mechanic
 };
 
+void Player::leg_kick()
+{
+    textures c_textures = _character.get_textures();
+    select_sprite(c_textures._leg_kick_texture, c_textures._leg_kick_texture_frames);
+    _animation_loop_playing = true;
+    // implement hp mechanic
+};
+
+void Player::block_kick()
+{
+    textures c_textures = _character.get_textures();
+    if (&c_textures._block_texture_frames != _active_sprite_frames)
+    {
+        select_sprite(c_textures._block_texture, c_textures._block_texture_frames);
+    }
+
+    _animation_loop_playing = true;
+};
+
 void Player::check_ground()
 {
     const Player &opponent = _is_player_B ? _fight_module.player_A : _fight_module.player_B;
@@ -138,6 +153,7 @@ void Player::animate()
     if (frameTime >= (1.00f / ANIMATION_SPEED_FPS))
     {
         _current_frame_++;
+        std::cout << "frameTime: " << frameTime << std::endl;
 
         if (_current_frame_ >= _active_sprite_frames->size())
         {
@@ -158,11 +174,13 @@ void Player::select_sprite(const sf::Texture &texture, const std::vector<sf::Int
         was_texture_updated = true;
     }
 
+    _animation_loop_playing = false;
     _current_frame_ = 0;
     _active_sprite->setTextureRect((*_active_sprite_frames)[0]);
+    _animation_clock.restart();
 
     sf::FloatRect bounds = _active_sprite->getLocalBounds();
-    _active_sprite->setOrigin(sf::Vector2f(bounds.size.x / 2.f, bounds.size.y / 2.f));
+    _active_sprite->setOrigin(sf::Vector2f(bounds.size.x / 2.f, bounds.size.y));
 
     if (was_texture_updated)
     {

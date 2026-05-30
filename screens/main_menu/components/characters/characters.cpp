@@ -7,7 +7,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
     auto characters = std::make_unique<std::vector<Character>>();
     characters->reserve(6);
 
-    sf::Texture avatar1, walk_texture, jump_texture, hand_kick_texture;
+    sf::Texture avatar1, walk_texture, jump_texture, hand_kick_texture, leg_kick_texture, block_texture;
     if (!avatar1.loadFromFile("screens/main_menu/components/characters/joko/avatar1.png"))
     {
         throw std::runtime_error("Joko avatar load failed");
@@ -53,7 +53,45 @@ std::unique_ptr<std::vector<Character>> init_characters()
     hand_kick_texture_frames.push_back(sf::IntRect({950, 0}, {322, 331}));  // hero frame 4
     hand_kick_texture_frames.push_back(sf::IntRect({1380, 0}, {207, 331})); // hero frame 5
 
-    characters->emplace_back("Joko", avatar1, 600, 100, walk_texture, walk_texture_frames, jump_texture, jump_texture_frames, hand_kick_texture, hand_kick_texture_frames);
+    if (!leg_kick_texture.loadFromFile("screens/main_menu/components/characters/joko/leg_kick_animation.png"))
+    {
+        throw std::runtime_error("Joko leg kick animation load failed");
+    }
+
+    // upd frames!!!
+    std::vector<sf::IntRect> leg_kick_texture_frames;
+    leg_kick_texture_frames.push_back(sf::IntRect({1, 0}, {219, 335}));    // hero frame 1
+    leg_kick_texture_frames.push_back(sf::IntRect({268, 0}, {207, 331}));  // hero frame 2
+    leg_kick_texture_frames.push_back(sf::IntRect({589, 0}, {275, 331}));  // hero frame 3
+    leg_kick_texture_frames.push_back(sf::IntRect({950, 0}, {322, 331}));  // hero frame 4
+    leg_kick_texture_frames.push_back(sf::IntRect({1380, 0}, {207, 331})); // hero frame 5
+
+    if (!block_texture.loadFromFile("screens/main_menu/components/characters/joko/block_animation.png"))
+    {
+        throw std::runtime_error("Joko leg kick animation load failed");
+    }
+
+    std::vector<sf::IntRect> block_texture_frames;
+    block_texture_frames.push_back(sf::IntRect({16, 5}, {251, 368}));
+    block_texture_frames.push_back(sf::IntRect({318, 10}, {232, 363}));
+    block_texture_frames.push_back(sf::IntRect({634, 10}, {246, 363}));
+    block_texture_frames.push_back(sf::IntRect({944, 10}, {281, 363}));
+    block_texture_frames.push_back(sf::IntRect({1343, 10}, {230, 363}));
+
+    characters->emplace_back("Joko",
+                             avatar1,
+                             600,
+                             100,
+                             walk_texture,
+                             walk_texture_frames,
+                             jump_texture,
+                             jump_texture_frames,
+                             hand_kick_texture,
+                             hand_kick_texture_frames,
+                             leg_kick_texture,
+                             leg_kick_texture_frames,
+                             block_texture,
+                             block_texture_frames);
 
     sf::Texture avatar2;
     if (!avatar2.loadFromFile("screens/main_menu/components/characters/jojo/avatar2.jpg"))

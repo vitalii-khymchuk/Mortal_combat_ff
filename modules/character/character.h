@@ -18,6 +18,10 @@ struct textures
     std::vector<sf::IntRect> &_hand_kick_texture_frames;
     sf::Texture &_jump_texture;
     std::vector<sf::IntRect> &_jump_texture_frames;
+    sf::Texture &_leg_kick_texture;
+    std::vector<sf::IntRect> &_leg_kick_texture_frames;
+    sf::Texture &_block_texture;
+    std::vector<sf::IntRect> &_block_texture_frames;
 };
 
 class Character
@@ -36,6 +40,10 @@ protected:
     std::vector<sf::IntRect> _hand_kick_texture_frames;
     sf::Texture _jump_texture;
     std::vector<sf::IntRect> _jump_texture_frames;
+    sf::Texture _leg_kick_texture;
+    std::vector<sf::IntRect> _leg_kick_texture_frames;
+    sf::Texture _block_texture;
+    std::vector<sf::IntRect> _block_texture_frames;
 
 public:
     Character(std::string name,
@@ -47,7 +55,11 @@ public:
               sf::Texture _jump_texture = sf::Texture(),
               std::vector<sf::IntRect> _jump_texture_frames = std::vector<sf::IntRect>(),
               const sf::Texture hand_kick_texture = sf::Texture(),
-              std::vector<sf::IntRect> hand_kick_texture_frames = std::vector<sf::IntRect>());
+              std::vector<sf::IntRect> hand_kick_texture_frames = std::vector<sf::IntRect>(),
+              const sf::Texture leg_kick_texture = sf::Texture(),
+              std::vector<sf::IntRect> leg_kick_texture_frames = std::vector<sf::IntRect>(),
+              const sf::Texture block_texture = sf::Texture(),
+              std::vector<sf::IntRect> block_texture_frames = std::vector<sf::IntRect>());
     Character();
     virtual ~Character() = default;
 
@@ -69,6 +81,6 @@ public:
     };
     textures get_textures()
     {
-        return {_walk_texture, _walk_texture_frames, _hand_kick_texture, _hand_kick_texture_frames, _jump_texture, _jump_texture_frames};
+        return {_walk_texture, _walk_texture_frames, _hand_kick_texture, _hand_kick_texture_frames, _jump_texture, _jump_texture_frames, _leg_kick_texture, _leg_kick_texture_frames, _block_texture, _block_texture_frames};
     };
 };

@@ -38,6 +38,8 @@ public:
     void move_right();
     void jump();
     void hand_kick();
+    void leg_kick();
+    void block_kick();
     void reset_animation();
     void animate();
     void select_sprite(const sf::Texture &texture, const std::vector<sf::IntRect> &active_sprite_frames);

@@ -52,7 +52,7 @@ void FightModule::handle_event(const sf::Event &event)
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S) && event.getIf<sf::Event::KeyPressed>())
     {
-        // player_A->duck();
+        player_A.block_kick();
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D) && event.getIf<sf::Event::KeyPressed>())
@@ -63,6 +63,11 @@ void FightModule::handle_event(const sf::Event &event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::R) && event.getIf<sf::Event::KeyPressed>())
     {
         player_A.hand_kick();
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::T) && event.getIf<sf::Event::KeyPressed>())
+    {
+        player_A.leg_kick();
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Up) && event.getIf<sf::Event::KeyPressed>())
@@ -77,7 +82,7 @@ void FightModule::handle_event(const sf::Event &event)
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Down) && event.getIf<sf::Event::KeyPressed>())
     {
-        // player_B->duck();
+        player_B.block_kick();
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Right) && event.getIf<sf::Event::KeyPressed>())
@@ -88,6 +93,11 @@ void FightModule::handle_event(const sf::Event &event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Comma) && event.getIf<sf::Event::KeyPressed>())
     {
         player_B.hand_kick();
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Period) && event.getIf<sf::Event::KeyPressed>())
+    {
+        player_B.leg_kick();
     }
 }
 
