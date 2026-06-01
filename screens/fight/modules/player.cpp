@@ -90,8 +90,9 @@ void Player::jump()
     if (!_is_falling)
     {
         textures c_textures = _character.get_textures();
+        specs c_specs = _character.get_specs();
         select_sprite(c_textures._jump_texture, c_textures._jump_texture_frames);
-        _y_speed = -400;
+        _y_speed = -400 * c_specs._weight_factor;
         _is_falling = true;
         _animation_loop_playing = true;
     }
@@ -99,28 +100,30 @@ void Player::jump()
 
 void Player::hand_kick()
 {
-    if (!can_attack())
+    if (!can_attack(false))
         return;
 
     textures c_textures = _character.get_textures();
+    specs c_specs = _character.get_specs();
     select_sprite(c_textures._hand_kick_texture, c_textures._hand_kick_texture_frames);
     _animation_loop_playing = true;
     // implement hp mechanic
-    apply_attack_to_opponent(8, 10);
-    start_attack_cooldown(0.25f);
+    apply_attack_to_opponent(c_specs._hand_force, c_specs._hand_force);
+    start_attack_cooldown(c_specs._hand_recovery_sec, false);
 };
 
 void Player::leg_kick()
 {
-    if (!can_attack())
+    if (!can_attack(true))
         return;
 
     textures c_textures = _character.get_textures();
+    specs c_specs = _character.get_specs();
     select_sprite(c_textures._leg_kick_texture, c_textures._leg_kick_texture_frames);
     _animation_loop_playing = true;
     // implement hp mechanic
-    apply_attack_to_opponent(14, 18);
-    start_attack_cooldown(0.45f);
+    apply_attack_to_opponent(c_specs._leg_force, c_specs._leg_force);
+    start_attack_cooldown(c_specs._leg_recovery_sec, true);
 };
 
 void Player::block_kick()
@@ -347,15 +350,29 @@ bool Player::is_in_contact_with_opponent(int test_pos_x, int test_pos_y, bool un
     return overlap_x && overlap_y && (unlock_x_on_opponent ? !is_on_opponent : true);
 }
 
-bool Player::can_attack() const
+bool Player::can_attack(bool is_leg_attack) const
 {
-    return _attack_cooldown_clock.getElapsedTime().asSeconds() >= _attack_cooldown_seconds && !_is_blocking;
+    specs c_specs = _character.get_specs();
+    if (is_leg_attack)
+    {
+        return _leg_attack_cooldown_clock.getElapsedTime().asSeconds() >= c_specs._leg_recovery_sec && !_is_blocking;
+    }
+    else
+    {
+        return _hand_attack_cooldown_clock.getElapsedTime().asSeconds() >= c_specs._hand_recovery_sec && !_is_blocking;
+    }
 }
 
-void Player::start_attack_cooldown(float seconds)
+void Player::start_attack_cooldown(float seconds, bool is_leg_attack)
 {
-    _attack_cooldown_seconds = seconds;
-    _attack_cooldown_clock.restart();
+    if (is_leg_attack)
+    {
+        _leg_attack_cooldown_clock.restart();
+    }
+    else
+    {
+        _hand_attack_cooldown_clock.restart();
+    }
 }
 
 void Player::apply_attack_to_opponent(int damage, int block_damage)
@@ -371,9 +388,11 @@ void Player::apply_attack_to_opponent(int damage, int block_damage)
         return;
     }
 
+    specs opponent_specs = opponent._character.get_specs();
+
     if (opponent._is_blocking && opponent._block_energy > 0.f)
     {
-        opponent._block_energy -= block_damage;
+        opponent._block_energy -= block_damage * opponent_specs._hp_factor;
 
         if (opponent._block_energy < 0.f)
             opponent._block_energy = 0.f;
@@ -386,7 +405,7 @@ void Player::apply_attack_to_opponent(int damage, int block_damage)
     }
     else
     {
-        opponent._hp_percents -= damage;
+        opponent._hp_percents -= damage * opponent_specs._hp_factor;
 
         if (opponent._hp_percents < 0)
             opponent._hp_percents = 0;
@@ -395,7 +414,8 @@ void Player::apply_attack_to_opponent(int damage, int block_damage)
 
 void Player::update_block_state()
 {
-    float dt = 1.0f / GAME_FPS;
+    specs c_specs = _character.get_specs();
+    float dt = 1.0f * c_specs._stamina_recovery_factor / GAME_FPS;
 
     if (_is_blocking)
     {

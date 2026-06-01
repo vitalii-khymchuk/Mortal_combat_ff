@@ -9,8 +9,9 @@ class Player
     FightModule &_fight_module;
     sf::Clock _animation_clock;
     sf::Clock _gravity_clock;
-    sf::Clock _attack_cooldown_clock;
-    float _attack_cooldown_seconds = 0.f;
+    sf::Clock _hand_attack_cooldown_clock;
+    sf::Clock _leg_attack_cooldown_clock;
+
     int _hp_percents = 100;
 
     float _y_speed = 0;
@@ -32,8 +33,8 @@ class Player
     void handle_falling();
     bool is_in_contact_with_opponent(int test_pos_x, int test_pos_y, bool unlock_x_on_opponent) const;
     void mirror_sprite(bool is_mirrored);
-    bool can_attack() const;
-    void start_attack_cooldown(float seconds);
+    bool can_attack(bool is_leg_attack) const;
+    void start_attack_cooldown(float seconds, bool is_leg_attack);
     void apply_attack_to_opponent(int damage, int block_damage);
     void update_block_state();
 

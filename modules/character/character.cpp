@@ -2,8 +2,7 @@
 
 Character::Character(std::string name,
                      const sf::Texture &avatar,
-                     int x_speed_max,
-                     int height_px,
+                     specs specs,
                      const sf::Texture walk_texture,
                      std::vector<sf::IntRect> walk_texture_frames,
                      sf::Texture jump_texture,
@@ -26,6 +25,13 @@ Character::Character(std::string name,
       _leg_kick_texture_frames(leg_kick_texture_frames),
       _block_texture(block_texture),
       _block_texture_frames(block_texture_frames),
-      _x_speed_max(x_speed_max),
-      _height_px(height_px) {};
+      _x_speed_max(specs._x_speed_max),
+      _height_px(specs._height_px),
+      _weight_factor(specs._weight_factor),
+      _hp_factor(specs._hp_factor),
+      _stamina_recovery_factor(specs._stamina_recovery_factor),
+      _hand_force(specs._hand_force),
+      _leg_force(specs._leg_force),
+      _hand_recovery_sec(specs._hand_recovery_sec),
+      _leg_recovery_sec(specs._leg_recovery_sec) {};
 Character::Character() : _name(""), _avatar(sf::Texture()), _walk_texture(sf::Texture()), _hand_kick_texture(sf::Texture()) {};

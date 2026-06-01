@@ -58,7 +58,6 @@ std::unique_ptr<std::vector<Character>> init_characters()
         throw std::runtime_error("Joko leg kick animation load failed");
     }
 
-    // upd frames!!!
     std::vector<sf::IntRect> leg_kick_texture_frames;
     leg_kick_texture_frames.push_back(sf::IntRect({9, 0}, {257, 368}));
     leg_kick_texture_frames.push_back(sf::IntRect({364, 0}, {252, 368}));
@@ -80,10 +79,19 @@ std::unique_ptr<std::vector<Character>> init_characters()
     block_texture_frames.push_back(sf::IntRect({944, 10}, {281, 363}));
     block_texture_frames.push_back(sf::IntRect({1343, 10}, {230, 363}));
 
+    specs specs1 = specs({._x_speed_max = 600,
+                          ._weight_factor = 1,
+                          ._height_px = 120,
+                          ._hp_factor = 0.8,
+                          ._stamina_recovery_factor = 0.7,
+                          ._hand_recovery_sec = 1,
+                          ._leg_recovery_sec = 1.5,
+                          ._hand_force = 7,
+                          ._leg_force = 10});
+
     characters->emplace_back("Joko",
                              avatar1,
-                             600,
-                             100,
+                             specs1,
                              walk_texture,
                              walk_texture_frames,
                              jump_texture,
@@ -101,7 +109,17 @@ std::unique_ptr<std::vector<Character>> init_characters()
         throw std::runtime_error("Jojo avatar load failed");
     }
 
-    characters->emplace_back("Jojo", std::move(avatar2), 300, 1);
+    specs specs2 = specs({._x_speed_max = 600,
+                          ._weight_factor = 1,
+                          ._height_px = 120,
+                          ._hp_factor = 0.8,
+                          ._stamina_recovery_factor = 0.7,
+                          ._hand_recovery_sec = 1,
+                          ._leg_recovery_sec = 1.5,
+                          ._hand_force = 7,
+                          ._leg_force = 10});
+
+    characters->emplace_back("Jojo", std::move(avatar2), specs2);
 
     sf::Texture avatar3;
     if (!avatar3.loadFromFile("screens/main_menu/components/characters/jola/avatar3.png"))
@@ -109,7 +127,17 @@ std::unique_ptr<std::vector<Character>> init_characters()
         throw std::runtime_error("Jola avatar load failed");
     }
 
-    characters->emplace_back("Jola", std::move(avatar3), 200, 1);
+    specs specs3 = specs({._x_speed_max = 600,
+                          ._weight_factor = 1,
+                          ._height_px = 120,
+                          ._hp_factor = 0.8,
+                          ._stamina_recovery_factor = 0.7,
+                          ._hand_recovery_sec = 1,
+                          ._leg_recovery_sec = 1.5,
+                          ._hand_force = 7,
+                          ._leg_force = 10});
+
+    characters->emplace_back("Jola", std::move(avatar3), specs3);
 
     sf::Texture avatar4;
     if (!avatar4.loadFromFile("screens/main_menu/components/characters/joma/avatar4.jpg"))
@@ -117,7 +145,17 @@ std::unique_ptr<std::vector<Character>> init_characters()
         throw std::runtime_error("Joma avatar load failed");
     }
 
-    characters->emplace_back("Joma", std::move(avatar4), 200, 1);
+    specs specs4 = specs({._x_speed_max = 600,
+                          ._weight_factor = 1,
+                          ._height_px = 120,
+                          ._hp_factor = 0.8,
+                          ._stamina_recovery_factor = 0.7,
+                          ._hand_recovery_sec = 1,
+                          ._leg_recovery_sec = 1.5,
+                          ._hand_force = 7,
+                          ._leg_force = 10});
+
+    characters->emplace_back("Joma", std::move(avatar4), specs4);
 
     sf::Texture avatar5;
     if (!avatar5.loadFromFile("screens/main_menu/components/characters/lana/avatr5.jpg"))
@@ -125,7 +163,17 @@ std::unique_ptr<std::vector<Character>> init_characters()
         throw std::runtime_error("Lana avatar load failed");
     }
 
-    characters->emplace_back("Lana", std::move(avatar5), 200, 1);
+    specs specs5 = specs({._x_speed_max = 600,
+                          ._weight_factor = 1,
+                          ._height_px = 120,
+                          ._hp_factor = 0.8,
+                          ._stamina_recovery_factor = 0.7,
+                          ._hand_recovery_sec = 1,
+                          ._leg_recovery_sec = 1.5,
+                          ._hand_force = 7,
+                          ._leg_force = 10});
+
+    characters->emplace_back("Lana", std::move(avatar5), specs5);
 
     sf::Texture avatar6;
     if (!avatar6.loadFromFile("screens/main_menu/components/characters/nala/avatar6.png"))
@@ -133,6 +181,16 @@ std::unique_ptr<std::vector<Character>> init_characters()
         throw std::runtime_error("Nala avatar load failed");
     }
 
-    characters->emplace_back("Nala", std::move(avatar6), 200, 1);
+    specs specs6 = specs({._x_speed_max = 600,
+                          ._weight_factor = 1,
+                          ._height_px = 120,
+                          ._hp_factor = 0.8,
+                          ._stamina_recovery_factor = 0.7,
+                          ._hand_recovery_sec = 1,
+                          ._leg_recovery_sec = 1.5,
+                          ._hand_force = 7,
+                          ._leg_force = 10});
+
+    characters->emplace_back("Nala", std::move(avatar6), specs6);
     return characters;
 };
