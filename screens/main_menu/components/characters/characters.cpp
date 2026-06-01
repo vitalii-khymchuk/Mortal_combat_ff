@@ -60,11 +60,13 @@ std::unique_ptr<std::vector<Character>> init_characters()
 
     // upd frames!!!
     std::vector<sf::IntRect> leg_kick_texture_frames;
-    leg_kick_texture_frames.push_back(sf::IntRect({1, 0}, {219, 335}));    // hero frame 1
-    leg_kick_texture_frames.push_back(sf::IntRect({268, 0}, {207, 331}));  // hero frame 2
-    leg_kick_texture_frames.push_back(sf::IntRect({589, 0}, {275, 331}));  // hero frame 3
-    leg_kick_texture_frames.push_back(sf::IntRect({950, 0}, {322, 331}));  // hero frame 4
-    leg_kick_texture_frames.push_back(sf::IntRect({1380, 0}, {207, 331})); // hero frame 5
+    leg_kick_texture_frames.push_back(sf::IntRect({9, 0}, {257, 368}));
+    leg_kick_texture_frames.push_back(sf::IntRect({364, 0}, {252, 368}));
+    leg_kick_texture_frames.push_back(sf::IntRect({741, 0}, {205, 368}));
+    leg_kick_texture_frames.push_back(sf::IntRect({1051, 0}, {302, 368}));
+    leg_kick_texture_frames.push_back(sf::IntRect({1428, 0}, {327, 368}));
+    leg_kick_texture_frames.push_back(sf::IntRect({1834, 0}, {346, 368}));
+    leg_kick_texture_frames.push_back(sf::IntRect({2209, 0}, {273, 368}));
 
     if (!block_texture.loadFromFile("screens/main_menu/components/characters/joko/block_animation.png"))
     {

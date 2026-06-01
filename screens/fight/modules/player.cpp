@@ -153,7 +153,6 @@ void Player::animate()
     if (frameTime >= (1.00f / ANIMATION_SPEED_FPS))
     {
         _current_frame_++;
-        std::cout << "frameTime: " << frameTime << std::endl;
 
         if (_current_frame_ >= _active_sprite_frames->size())
         {
