@@ -37,6 +37,9 @@ Player::Player(FightModule &fight_module,
 
 void Player::move_left()
 {
+    if (_is_blocking)
+        return;
+
     if (!_is_running_left)
     {
         mirror_sprite(true);
@@ -57,6 +60,9 @@ void Player::move_left()
 };
 void Player::move_right()
 {
+    if (_is_blocking)
+        return;
+
     if (_is_running_left)
     {
         mirror_sprite(false);
@@ -78,6 +84,9 @@ void Player::move_right()
 
 void Player::jump()
 {
+    if (_is_blocking)
+        return;
+
     if (!_is_falling)
     {
         textures c_textures = _character.get_textures();
@@ -90,22 +99,37 @@ void Player::jump()
 
 void Player::hand_kick()
 {
+    if (!can_attack())
+        return;
+
     textures c_textures = _character.get_textures();
     select_sprite(c_textures._hand_kick_texture, c_textures._hand_kick_texture_frames);
     _animation_loop_playing = true;
     // implement hp mechanic
+    apply_attack_to_opponent(8, 10);
+    start_attack_cooldown(0.25f);
 };
 
 void Player::leg_kick()
 {
+    if (!can_attack())
+        return;
+
     textures c_textures = _character.get_textures();
     select_sprite(c_textures._leg_kick_texture, c_textures._leg_kick_texture_frames);
     _animation_loop_playing = true;
     // implement hp mechanic
+    apply_attack_to_opponent(14, 18);
+    start_attack_cooldown(0.45f);
 };
 
 void Player::block_kick()
 {
+    if (_block_energy <= 0.f)
+        return;
+
+    _is_blocking = true;
+
     textures c_textures = _character.get_textures();
     if (&c_textures._block_texture_frames != _active_sprite_frames)
     {
@@ -203,6 +227,7 @@ void Player::handle_fps_signal()
 {
     check_ground();
     handle_falling();
+    update_block_state();
 
     // automation for loop animation
     if (_animation_loop_playing)
@@ -320,4 +345,83 @@ bool Player::is_in_contact_with_opponent(int test_pos_x, int test_pos_y, bool un
     bool is_on_opponent = (opp_top - my_top) >= (opp_size.y / 2.0f);
 
     return overlap_x && overlap_y && (unlock_x_on_opponent ? !is_on_opponent : true);
+}
+
+bool Player::can_attack() const
+{
+    return _attack_cooldown_clock.getElapsedTime().asSeconds() >= _attack_cooldown_seconds && !_is_blocking;
+}
+
+void Player::start_attack_cooldown(float seconds)
+{
+    _attack_cooldown_seconds = seconds;
+    _attack_cooldown_clock.restart();
+}
+
+void Player::apply_attack_to_opponent(int damage, int block_damage)
+{
+    Player &opponent = _is_player_B ? _fight_module.player_A : _fight_module.player_B;
+
+    auto my_size = _active_sprite->getGlobalBounds().size;
+    float left_edge = _pos_x - my_size.x / 2.f + INTERACTION_DISTANCE_PX;
+    float right_edge = _pos_x + my_size.x / 2.f - INTERACTION_DISTANCE_PX;
+
+    if (!is_in_contact_with_opponent(left_edge, _pos_y, true) && !is_in_contact_with_opponent(right_edge, _pos_y, true))
+    {
+        return;
+    }
+
+    if (opponent._is_blocking && opponent._block_energy > 0.f)
+    {
+        opponent._block_energy -= block_damage;
+
+        if (opponent._block_energy < 0.f)
+            opponent._block_energy = 0.f;
+
+        if (opponent._block_energy == 0.f)
+        {
+            opponent._is_blocking = false;
+            opponent.reset_animation();
+        }
+    }
+    else
+    {
+        opponent._hp_percents -= damage;
+
+        if (opponent._hp_percents < 0)
+            opponent._hp_percents = 0;
+    }
+}
+
+void Player::update_block_state()
+{
+    float dt = 1.0f / GAME_FPS;
+
+    if (_is_blocking)
+    {
+        _block_energy -= 25.f * dt;
+
+        if (_block_energy <= 0.f)
+        {
+            _block_energy = 0.f;
+            _is_blocking = false;
+            reset_animation();
+        }
+    }
+    else
+    {
+        _block_energy += 12.f * dt;
+
+        if (_block_energy > _block_energy_max)
+            _block_energy = _block_energy_max;
+    }
+}
+
+void Player::stop_block()
+{
+    if (_is_blocking)
+    {
+        _is_blocking = false;
+        reset_animation();
+    }
 }

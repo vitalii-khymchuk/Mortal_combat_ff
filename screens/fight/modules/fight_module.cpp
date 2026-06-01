@@ -26,17 +26,27 @@ void FightModule::handle_event(const sf::Event &event)
     {
         auto keycode = keyReleased->scancode;
         if (keycode == sf::Keyboard::Scancode::A ||
-            keycode == sf::Keyboard::Scancode::S ||
             keycode == sf::Keyboard::Scancode::D)
         {
             player_A.reset_animation();
         }
 
+        if (keycode == sf::Keyboard::Scancode::S)
+        {
+            player_A.reset_animation();
+            player_A.stop_block();
+        }
+
         if (keycode == sf::Keyboard::Scancode::Left ||
-            keycode == sf::Keyboard::Scancode::Down ||
             keycode == sf::Keyboard::Scancode::Right)
         {
             player_B.reset_animation();
+        }
+
+        if (keycode == sf::Keyboard::Scancode::Down)
+        {
+            player_B.reset_animation();
+            player_B.stop_block();
         }
     }
 
