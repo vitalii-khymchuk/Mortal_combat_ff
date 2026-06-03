@@ -35,9 +35,11 @@ class Player
     void start_attack_cooldown(float seconds, bool is_leg_attack);
     void apply_attack_to_opponent(int damage, int block_damage);
     void update_block_state();
+    void bring_to_front();
 
 public:
-    float _pos_x, _pos_y;
+    float _pos_x,
+        _pos_y;
     int _hp_percents = 100;
 
     Player(FightModule &fight_module, Character &character, const int &init_pos_x, const int &init_pos_y, const bool is_right_character);

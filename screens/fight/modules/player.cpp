@@ -103,6 +103,7 @@ void Player::hand_kick()
     if (!can_attack(false))
         return;
 
+    bring_to_front();
     textures c_textures = _character.get_textures();
     specs c_specs = _character.get_specs();
     select_sprite(c_textures._hand_kick_texture, c_textures._hand_kick_texture_frames);
@@ -117,6 +118,7 @@ void Player::leg_kick()
     if (!can_attack(true))
         return;
 
+    bring_to_front();
     textures c_textures = _character.get_textures();
     specs c_specs = _character.get_specs();
     select_sprite(c_textures._leg_kick_texture, c_textures._leg_kick_texture_frames);
@@ -126,6 +128,7 @@ void Player::leg_kick()
     start_attack_cooldown(c_specs._leg_recovery_sec, true);
 };
 
+// block opponent kick (only in enough _block_energy)
 void Player::block_kick()
 {
     if (_block_energy <= 0.f)
@@ -142,6 +145,7 @@ void Player::block_kick()
     _animation_loop_playing = true;
 };
 
+// stop falling if player reached ground or head of opponent
 void Player::check_ground()
 {
     const Player &opponent = _is_player_B ? _fight_module.player_A : _fight_module.player_B;
@@ -153,15 +157,18 @@ void Player::check_ground()
 
     bool has_contact = is_in_contact_with_opponent(_pos_x, _pos_y, false);
 
-    float top = _pos_y;
-    float bottom = _pos_y + bounds.y;
-    float opp_top = opponent._pos_y;
+    float top = _pos_y - bounds.y;
+    float bottom = _pos_y;
+    float opp_top = opponent._pos_y - bounds_opponent.y;
+
+    // bool is_standing_on_opponent =
+    //     has_contact &&
+    //     bottom >= opp_top &&
+    //     bottom <= opp_top + INTERACTION_DISTANCE_PX &&
+    //     top < opp_top;
 
     bool is_standing_on_opponent =
-        has_contact &&
-        bottom >= opp_top &&
-        bottom <= opp_top + INTERACTION_DISTANCE_PX &&
-        top < opp_top;
+        has_contact && bottom >= opp_top;
 
     _is_falling = !(is_standing_on_opponent || _pos_y >= GROUND_Y_LEVEL);
     // adj ground level
@@ -171,6 +178,7 @@ void Player::check_ground()
     }
 }
 
+// apply next animation frame
 void Player::animate()
 {
     _animation_clock.start();
@@ -190,6 +198,8 @@ void Player::animate()
         _animation_clock.restart();
     }
 }
+
+// select sprite according to act, reset prev animation state
 void Player::select_sprite(const sf::Texture &texture, const std::vector<sf::IntRect> &active_sprite_frames)
 {
     bool was_texture_updated = false;
@@ -226,6 +236,7 @@ void Player::reset_animation()
     select_sprite(c_textures._walk_texture, c_textures._walk_texture_frames);
 };
 
+// function driven by game main clock
 void Player::handle_fps_signal()
 {
     check_ground();
@@ -258,6 +269,7 @@ void Player::mirror_sprite(bool is_mirrored)
         _active_sprite->setScale(sf::Vector2f(scale_factor, scale_factor));
 }
 
+// falling physics
 void Player::handle_falling()
 {
 
@@ -284,6 +296,7 @@ void Player::handle_falling()
     _gravity_clock.restart();
 }
 
+// check if player able to move horizontally
 void Player::check_edges()
 {
     if (!_active_sprite)
@@ -335,21 +348,22 @@ bool Player::is_in_contact_with_opponent(int test_pos_x, int test_pos_y, bool un
 
     float my_left = test_pos_x - my_size.x / 2.f + INTERACTION_DISTANCE_PX * 2;
     float my_right = test_pos_x + my_size.x / 2.f - INTERACTION_DISTANCE_PX * 2;
-    float my_top = test_pos_y;
-    float my_bottom = test_pos_y + my_size.y;
+    float my_top = test_pos_y - my_size.y;
+    float my_bottom = test_pos_y;
 
     float opp_left = opponent._pos_x - opp_size.x / 2.f + INTERACTION_DISTANCE_PX;
     float opp_right = opponent._pos_x + opp_size.x / 2.f - INTERACTION_DISTANCE_PX;
-    float opp_top = opponent._pos_y;
-    float opp_bottom = opponent._pos_y + opp_size.y;
+    float opp_top = opponent._pos_y - opp_size.y;
+    float opp_bottom = opponent._pos_y;
 
     bool overlap_x = my_right >= opp_left && my_left <= opp_right;
     bool overlap_y = my_bottom >= opp_top && my_top <= opp_bottom;
-    bool is_on_opponent = (opp_top - my_top) >= (opp_size.y / 2.0f);
+    bool is_on_opponent = std::abs(opp_top - my_bottom) <= INTERACTION_DISTANCE_PX;
 
     return overlap_x && overlap_y && (unlock_x_on_opponent ? !is_on_opponent : true);
 }
 
+// check timer of frequency of attacks
 bool Player::can_attack(bool is_leg_attack) const
 {
     specs c_specs = _character.get_specs();
@@ -363,6 +377,7 @@ bool Player::can_attack(bool is_leg_attack) const
     }
 }
 
+// timer to limit frequency of attacks
 void Player::start_attack_cooldown(float seconds, bool is_leg_attack)
 {
     if (is_leg_attack)
@@ -375,6 +390,7 @@ void Player::start_attack_cooldown(float seconds, bool is_leg_attack)
     }
 }
 
+// take opponent hp if it's not in block state
 void Player::apply_attack_to_opponent(int damage, int block_damage)
 {
     Player &opponent = _is_player_B ? _fight_module.player_A : _fight_module.player_B;
@@ -412,6 +428,7 @@ void Player::apply_attack_to_opponent(int damage, int block_damage)
     }
 }
 
+// increase block energy when player dont use it, decrease when use (like nitro)
 void Player::update_block_state()
 {
     specs c_specs = _character.get_specs();
@@ -446,6 +463,7 @@ void Player::stop_block()
     }
 }
 
+// reset player position and health before fight
 void Player::reset_player()
 {
     _hp_percents = 100;
@@ -462,3 +480,20 @@ void Player::reset_player()
         _pos_y = 200;
     }
 };
+
+// move character sprite to end of array to show in front
+void Player::bring_to_front()
+{
+    auto &shapes = _fight_module._game.shapes;
+
+    auto it = std::find_if(shapes.begin(), shapes.end(),
+                           [this](const auto &ptr)
+                           {
+                               return ptr.get() == _active_sprite;
+                           });
+
+    if (it != shapes.end())
+    {
+        std::rotate(it, it + 1, shapes.end());
+    }
+}
