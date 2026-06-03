@@ -12,8 +12,6 @@ class Player
     sf::Clock _hand_attack_cooldown_clock;
     sf::Clock _leg_attack_cooldown_clock;
 
-    int _hp_percents = 100;
-
     float _y_speed = 0;
     int _current_frame_ = 0;
     float _block_energy = 100.f;
@@ -40,6 +38,7 @@ class Player
 
 public:
     float _pos_x, _pos_y;
+    int _hp_percents = 100;
 
     Player(FightModule &fight_module, Character &character, const int &init_pos_x, const int &init_pos_y, const bool is_right_character);
     ~Player() = default;
@@ -52,6 +51,7 @@ public:
     void block_kick();
     void stop_block();
     void reset_animation();
+    void reset_player();
     void animate();
     void select_sprite(const sf::Texture &texture, const std::vector<sf::IntRect> &active_sprite_frames);
 };

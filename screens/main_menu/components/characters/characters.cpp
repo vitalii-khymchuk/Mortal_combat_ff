@@ -79,8 +79,8 @@ std::unique_ptr<std::vector<Character>> init_characters()
     block_texture_frames.push_back(sf::IntRect({944, 10}, {281, 363}));
     block_texture_frames.push_back(sf::IntRect({1343, 10}, {230, 363}));
 
-    specs specs1 = specs({._x_speed_max = 600,
-                          ._weight_factor = 1,
+    specs specs1 = specs({._x_speed_max = 1000,
+                          ._weight_factor = 1.5,
                           ._height_px = 120,
                           ._hp_factor = 0.8,
                           ._stamina_recovery_factor = 0.7,

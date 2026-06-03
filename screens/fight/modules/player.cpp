@@ -445,3 +445,20 @@ void Player::stop_block()
         reset_animation();
     }
 }
+
+void Player::reset_player()
+{
+    _hp_percents = 100;
+    _block_energy = 100;
+
+    if (_is_player_B)
+    {
+        _pos_x = 650;
+        _pos_y = 200;
+    }
+    else
+    {
+        _pos_x = 150;
+        _pos_y = 200;
+    }
+};
