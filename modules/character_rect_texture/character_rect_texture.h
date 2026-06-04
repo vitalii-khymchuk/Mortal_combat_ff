@@ -39,3 +39,14 @@ public:
 
     ~CharacterFightSprite() = default;
 };
+
+// text elements while fight on pause
+class FightPauseText : public sf::Text
+{
+public:
+    FightPauseText(const sf::Font &font, sf::String string = "", unsigned int characterSize = 30) : sf::Text(font, string, characterSize)
+    {
+    }
+
+    ~FightPauseText() = default;
+};

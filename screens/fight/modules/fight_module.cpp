@@ -1,6 +1,7 @@
 #include "fight_module.h"
 #include "modules/game/game.h"
 #include "screens/fight/components/background/background.h"
+#include "screens/fight/components/pause_text/pause_text.h"
 #include <iostream>
 
 FightModule::FightModule(Game &game)
@@ -176,11 +177,13 @@ void FightModule::end_fight(bool _force_end)
 void FightModule::pause_fight()
 {
     _is_pause = true;
+    init_pause_text(_game);
 };
 
 void FightModule::continue_fight()
 {
     _is_pause = false;
+    remove_pause_texts(_game);
 };
 
 void FightModule::track_hp()
