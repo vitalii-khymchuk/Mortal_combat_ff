@@ -1,4 +1,37 @@
 #include "character.h"
 
-Character::Character(std::string name, sf::Texture avatar) : _name(name), _avatar(avatar) {};
-Character::Character() : _name("") {};
+Character::Character(std::string name,
+                     const sf::Texture &avatar,
+                     specs specs,
+                     const sf::Texture walk_texture,
+                     std::vector<sf::IntRect> walk_texture_frames,
+                     sf::Texture jump_texture,
+                     std::vector<sf::IntRect> jump_texture_frames,
+                     const sf::Texture hand_kick_texture,
+                     std::vector<sf::IntRect> hand_kick_texture_frames,
+                     const sf::Texture leg_kick_texture,
+                     std::vector<sf::IntRect> leg_kick_texture_frames,
+                     const sf::Texture block_texture,
+                     std::vector<sf::IntRect> block_texture_frames)
+    : _name(name),
+      _avatar(avatar),
+      _walk_texture(walk_texture),
+      _jump_texture(jump_texture),
+      _jump_texture_frames(jump_texture_frames),
+      _hand_kick_texture(hand_kick_texture),
+      _walk_texture_frames(walk_texture_frames),
+      _hand_kick_texture_frames(hand_kick_texture_frames),
+      _leg_kick_texture(leg_kick_texture),
+      _leg_kick_texture_frames(leg_kick_texture_frames),
+      _block_texture(block_texture),
+      _block_texture_frames(block_texture_frames),
+      _x_speed_max(specs._x_speed_max),
+      _height_px(specs._height_px),
+      _weight_factor(specs._weight_factor),
+      _hp_factor(specs._hp_factor),
+      _stamina_recovery_factor(specs._stamina_recovery_factor),
+      _hand_force(specs._hand_force),
+      _leg_force(specs._leg_force),
+      _hand_recovery_sec(specs._hand_recovery_sec),
+      _leg_recovery_sec(specs._leg_recovery_sec) {};
+Character::Character() : _name(""), _avatar(sf::Texture()), _walk_texture(sf::Texture()), _hand_kick_texture(sf::Texture()) {};

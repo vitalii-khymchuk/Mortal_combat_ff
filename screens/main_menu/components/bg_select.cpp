@@ -3,14 +3,13 @@
 #include "modules/game/game.h"
 #include "iostream"
 
-// RECTANGLE - BACKGROUND
-std::pair<float, float> rect_size = {260.0f, 200.0f}; // rect_size.first -> float rect_size_x=260.0f;
-auto rect = std::make_unique<sf::RectangleShape>(sf::Vector2f(rect_size.first, rect_size.second));
-
-std::pair<float, float> rect_pos = {400 - rect_size.first / 2, 10.0f};
-
 void init_bg_select(MainMenuModule *main_menu_ptr)
 {
+    // RECTANGLE - BACKGROUND
+    std::pair<float, float> rect_size = {260.0f, 200.0f}; // rect_size.first -> float rect_size_x=260.0f;
+    auto rect = std::make_unique<sf::RectangleShape>(sf::Vector2f(rect_size.first, rect_size.second));
+    std::pair<float, float> rect_pos = {400 - rect_size.first / 2, 10.0f};
+
     rect->setPosition(sf::Vector2f(rect_pos.first, rect_pos.second));
 
     // 2. Make the body completely transparent

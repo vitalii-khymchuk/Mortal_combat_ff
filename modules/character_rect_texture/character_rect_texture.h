@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
+// character rectangle for menu
 class CharacterRectTexture : public sf::RectangleShape
 {
 public:
@@ -24,4 +25,28 @@ public:
     }
 
     ~CharacterNameText() = default;
+};
+
+// character sprite for fight
+class CharacterFightSprite : public sf::Sprite
+{
+public:
+    bool is_character_b;
+
+    CharacterFightSprite(const sf::Texture &texture, bool isCharacterB = false) : sf::Sprite(texture), is_character_b(isCharacterB)
+    {
+    }
+
+    ~CharacterFightSprite() = default;
+};
+
+// text elements while fight on pause
+class FightPauseText : public sf::Text
+{
+public:
+    FightPauseText(const sf::Font &font, sf::String string = "", unsigned int characterSize = 30) : sf::Text(font, string, characterSize)
+    {
+    }
+
+    ~FightPauseText() = default;
 };
