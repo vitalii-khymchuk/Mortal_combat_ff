@@ -3,15 +3,18 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "modules/screen/screen.h"
+#include <SFML/Audio.hpp>
 
 class Screen;
 class Game;
 class Character;
 
-inline std::vector<std::string> bg_paths = {"screens/main_menu/assets/background1.png", "screens/main_menu/assets/background2.jpg"};
+inline std::vector<std::string>
+    bg_paths = {"screens/main_menu/assets/background1.png", "screens/main_menu/assets/background2.jpg"};
 
 class MainMenuModule : public Screen
 {
+    sf::Music bg_music;
     std::vector<sf::Texture> _bg_textures;
     int _active_bg_index = 0;
     int _active_character_a_index = 0;
