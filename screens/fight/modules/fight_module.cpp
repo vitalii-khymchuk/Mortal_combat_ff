@@ -11,6 +11,8 @@ FightModule::FightModule(Game &game)
       player_B(*this, game.selected_character_B, 650, 200, true)
 {
     init_background(this);
+    sounds.play_bg_music();
+    sounds.play_round_sound(1);
 }
 
 void FightModule::handle_event(const sf::Event &event)
@@ -146,19 +148,19 @@ void FightModule::tick_time()
         sec_clock.restart();
         if (!_is_pause)
         {
-            _timer_sec--;
+            _fight_timer_sec--;
             // upd statusbar
         }
     }
 
-    if (_timer_sec <= 0)
+    if (_fight_timer_sec <= 0)
     {
         // out of time msg
         end_fight(false);
-        _timer_sec = MATCH_DURATION_SEC;
+        _fight_timer_sec = MATCH_DURATION_SEC;
     }
 
-    // std::cout << "TIMER: " << _timer_sec << std::endl;
+    // std::cout << "TIMER: " << _fight_timer_sec << std::endl;
 }
 
 // end fight, _force_end = true return to main menu, _force_end = false, init new round
@@ -172,6 +174,7 @@ void FightModule::end_fight(bool _force_end)
 
     player_A.reset_player();
     player_B.reset_player();
+    sounds.play_round_sound(_player_a_wins + _player_b_wins + 1);
 };
 
 void FightModule::pause_fight()
@@ -188,6 +191,8 @@ void FightModule::continue_fight()
 
 void FightModule::track_hp()
 {
+    static bool finish_him_played = false;
+
     if (_player_a_wins == 2)
     {
         pause_fight();
@@ -206,16 +211,40 @@ void FightModule::track_hp()
 
     if (player_A._hp_percents <= 0)
     {
-        _player_b_wins++;
+        static int timer_id = timers.add_timer(3, [this]()
+                                               {
+                               _player_b_wins++;
+                               end_fight(false);
+                               finish_him_played = false; });
+        if (timers.is_running(timer_id))
+        {
+            return;
+        }
+
         // win msg
-        end_fight(false);
+        timers.start(timer_id);
     }
 
     if (player_B._hp_percents <= 0)
     {
-        _player_a_wins++;
+        static int timer_id = timers.add_timer(3, [this]()
+                                               {
+                               _player_a_wins++;
+                               end_fight(false);
+                               finish_him_played = false; });
+        if (timers.is_running(timer_id))
+        {
+            return;
+        }
+
         // win msg
-        end_fight(false);
+        timers.start(timer_id);
+    }
+
+    if (!finish_him_played && (player_A._hp_percents <= 20 || player_B._hp_percents <= 20))
+    {
+        finish_him_played = true;
+        sounds.play_finish_him_sound();
     }
 };
 
@@ -230,4 +259,5 @@ void FightModule::handle_frame_signal()
     player_B.handle_fps_signal();
     tick_time();
     track_hp();
+    timers.tick();
 }

@@ -109,8 +109,16 @@ void Player::hand_kick()
     select_sprite(c_textures._hand_kick_texture, c_textures._hand_kick_texture_frames);
     _animation_loop_playing = true;
     // implement hp mechanic
-    apply_attack_to_opponent(c_specs._hand_force, c_specs._hand_force);
+    bool is_applied = apply_attack_to_opponent(c_specs._hand_force, c_specs._hand_force);
     start_attack_cooldown(c_specs._hand_recovery_sec, false);
+    if (is_applied)
+    {
+        _fight_module.sounds.play_hand_kick_sound();
+    }
+    else
+    {
+        _fight_module.sounds.play_air_kick_sound();
+    }
 };
 
 void Player::leg_kick()
@@ -124,8 +132,16 @@ void Player::leg_kick()
     select_sprite(c_textures._leg_kick_texture, c_textures._leg_kick_texture_frames);
     _animation_loop_playing = true;
     // implement hp mechanic
-    apply_attack_to_opponent(c_specs._leg_force, c_specs._leg_force);
+    bool is_applied = apply_attack_to_opponent(c_specs._leg_force, c_specs._leg_force);
     start_attack_cooldown(c_specs._leg_recovery_sec, true);
+    if (is_applied)
+    {
+        _fight_module.sounds.play_leg_kick_sound();
+    }
+    else
+    {
+        _fight_module.sounds.play_air_kick_sound();
+    }
 };
 
 // block opponent kick (only in enough _block_energy)
@@ -391,7 +407,7 @@ void Player::start_attack_cooldown(float seconds, bool is_leg_attack)
 }
 
 // take opponent hp if it's not in block state
-void Player::apply_attack_to_opponent(int damage, int block_damage)
+bool Player::apply_attack_to_opponent(int damage, int block_damage)
 {
     Player &opponent = _is_player_B ? _fight_module.player_A : _fight_module.player_B;
 
@@ -401,7 +417,7 @@ void Player::apply_attack_to_opponent(int damage, int block_damage)
 
     if (!is_in_contact_with_opponent(left_edge, _pos_y, true) && !is_in_contact_with_opponent(right_edge, _pos_y, true))
     {
-        return;
+        return false;
     }
 
     specs opponent_specs = opponent._character.get_specs();
@@ -424,8 +440,16 @@ void Player::apply_attack_to_opponent(int damage, int block_damage)
         opponent._hp_percents -= damage * opponent_specs._hp_factor;
 
         if (opponent._hp_percents < 0)
+        {
             opponent._hp_percents = 0;
+        }
+        // set defeated position for opponent
+        if (opponent._hp_percents == 0)
+        {
+            opponent._active_sprite->setRotation(sf::degrees(90));
+        }
     }
+    return true;
 }
 
 // increase block energy when player dont use it, decrease when use (like nitro)
@@ -468,6 +492,7 @@ void Player::reset_player()
 {
     _hp_percents = 100;
     _block_energy = 100;
+    _active_sprite->setRotation(sf::degrees(0));
 
     if (_is_player_B)
     {
