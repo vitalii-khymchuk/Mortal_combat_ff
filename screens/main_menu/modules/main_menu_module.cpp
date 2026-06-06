@@ -42,7 +42,7 @@ MainMenuModule::MainMenuModule(Game &game) : Screen(), _game(game)
     init_char_select(this, 0, false);
     init_char_select(this, 400, true);
 
-    if (!bg_music.openFromFile("assets/main_theme.mp3"))
+    if (!bg_music.openFromFile("screens/main_menu/assets/main_theme.mp3"))
         std::cout << "Failed to load main_theme.mp3\n";
 
     bg_music.setLooping(true);

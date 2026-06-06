@@ -11,6 +11,8 @@ FightModule::FightModule(Game &game)
       player_B(*this, game.selected_character_B, 650, 200, true)
 {
     init_background(this);
+    sounds.play_bg_music();
+    sounds.play_round_sound(1);
 }
 
 void FightModule::handle_event(const sf::Event &event)
@@ -172,6 +174,7 @@ void FightModule::end_fight(bool _force_end)
 
     player_A.reset_player();
     player_B.reset_player();
+    sounds.play_round_sound(_player_a_wins + _player_b_wins + 1);
 };
 
 void FightModule::pause_fight()
@@ -188,6 +191,8 @@ void FightModule::continue_fight()
 
 void FightModule::track_hp()
 {
+    static bool finish_him_played = false;
+
     if (_player_a_wins == 2)
     {
         pause_fight();
@@ -209,6 +214,7 @@ void FightModule::track_hp()
         _player_b_wins++;
         // win msg
         end_fight(false);
+        finish_him_played = false;
     }
 
     if (player_B._hp_percents <= 0)
@@ -216,6 +222,13 @@ void FightModule::track_hp()
         _player_a_wins++;
         // win msg
         end_fight(false);
+        finish_him_played = false;
+    }
+
+    if (!finish_him_played && (player_A._hp_percents <= 20 || player_B._hp_percents <= 20))
+    {
+        finish_him_played = true;
+        sounds.play_finish_him_sound();
     }
 };
 

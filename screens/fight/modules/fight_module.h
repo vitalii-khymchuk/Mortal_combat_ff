@@ -2,6 +2,7 @@
 #include "modules/screen/screen.h"
 #include "modules/constants/constants.h"
 #include "screens/fight/modules/player.h"
+#include "screens/fight/modules/sounds/sounds.h"
 #include <SFML/Graphics.hpp>
 
 class Screen;
@@ -25,6 +26,7 @@ public:
     Game &_game;
     Player player_A;
     Player player_B;
+    Sounds sounds;
 
     FightModule(Game &game);
     ~FightModule() override = default;

@@ -33,7 +33,7 @@ class Player
     void mirror_sprite(bool is_mirrored);
     bool can_attack(bool is_leg_attack) const;
     void start_attack_cooldown(float seconds, bool is_leg_attack);
-    void apply_attack_to_opponent(int damage, int block_damage);
+    bool apply_attack_to_opponent(int damage, int block_damage);
     void update_block_state();
     void bring_to_front();
 
