@@ -440,7 +440,14 @@ bool Player::apply_attack_to_opponent(int damage, int block_damage)
         opponent._hp_percents -= damage * opponent_specs._hp_factor;
 
         if (opponent._hp_percents < 0)
+        {
             opponent._hp_percents = 0;
+        }
+        // set defeated position for opponent
+        if (opponent._hp_percents == 0)
+        {
+            opponent._active_sprite->setRotation(sf::degrees(90));
+        }
     }
     return true;
 }
@@ -485,6 +492,7 @@ void Player::reset_player()
 {
     _hp_percents = 100;
     _block_energy = 100;
+    _active_sprite->setRotation(sf::degrees(0));
 
     if (_is_player_B)
     {

@@ -1,5 +1,6 @@
 #include "fight_module.h"
 #include "modules/game/game.h"
+#include "modules/timer/timer.h"
 #include "screens/fight/components/background/background.h"
 #include "screens/fight/components/pause_text/pause_text.h"
 #include <iostream>
@@ -192,6 +193,8 @@ void FightModule::continue_fight()
 void FightModule::track_hp()
 {
     static bool finish_him_played = false;
+    static Timer timer(3);
+    timer.tick();
 
     if (_player_a_wins == 2)
     {
@@ -211,18 +214,36 @@ void FightModule::track_hp()
 
     if (player_A._hp_percents <= 0)
     {
-        _player_b_wins++;
+        if (timer.is_running())
+        {
+            return;
+        }
+
         // win msg
-        end_fight(false);
-        finish_him_played = false;
+        timer.set_callback([this]()
+                           {
+                               _player_b_wins++;
+                               end_fight(false);
+                               finish_him_played = false;
+                                timer.reset(); });
+        timer.start();
     }
 
     if (player_B._hp_percents <= 0)
     {
-        _player_a_wins++;
+        if (timer.is_running())
+        {
+            return;
+        }
+
         // win msg
-        end_fight(false);
-        finish_him_played = false;
+        timer.set_callback([this]()
+                           {
+                               _player_a_wins++;
+                               end_fight(false);
+                               finish_him_played = false;
+                                timer.reset(); });
+        timer.start();
     }
 
     if (!finish_him_played && (player_A._hp_percents <= 20 || player_B._hp_percents <= 20))
