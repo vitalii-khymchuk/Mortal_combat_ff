@@ -5,8 +5,7 @@
 #include <iostream>
 
 FightModule::FightModule(Game &game)
-    : Screen(),
-      _game(game),
+    : Screen(game),
       player_A(*this, game.selected_character_A, 150, 200, false),
       player_B(*this, game.selected_character_B, 650, 200, true)
 {

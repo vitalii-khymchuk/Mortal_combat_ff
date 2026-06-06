@@ -11,7 +11,7 @@
 
 static int CHARACTERS_IN_ROW = 3;
 
-MainMenuModule::MainMenuModule(Game &game) : Screen(), _game(game)
+MainMenuModule::MainMenuModule(Game &game) : Screen(game)
 {
     // placeholder
     //  std::unique_ptr<sf::RectangleShape> rectangle = std::make_unique<sf::RectangleShape>((sf::Vector2f(120.0f, 60.0f)));

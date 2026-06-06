@@ -28,7 +28,6 @@ class MainMenuModule : public Screen
     void upd_selected_char_text(const int &next_index, const bool &is_character_B);
 
 public:
-    Game &_game;
     std::unique_ptr<std::vector<Character>> _characters;
     MainMenuModule(Game &game);
     ~MainMenuModule() override = default;

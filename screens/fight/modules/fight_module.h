@@ -24,7 +24,6 @@ class FightModule : public Screen
     void track_hp();
 
 public:
-    Game &_game;
     Player player_A;
     Player player_B;
     Sounds sounds;

@@ -3,6 +3,7 @@
 #include "modules/constants/constants.h"
 #include "modules/game/game.h"
 #include "iostream"
+#include <algorithm>
 
 Player::Player(FightModule &fight_module,
                Character &character,
