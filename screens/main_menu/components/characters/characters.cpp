@@ -104,7 +104,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
                              block_texture_frames);
 
     sf::Texture avatar2;
-    if (!avatar2.loadFromFile("screens/main_menu/components/characters/jojo/avatar2.jpg"))
+    if (!avatar2.loadFromFile("screens/main_menu/components/characters/jojo/avatar2.png"))
     {
         throw std::runtime_error("Jojo avatar load failed");
     }
@@ -202,7 +202,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
     characters->emplace_back("Jola", std::move(avatar3), specs3);
 
     sf::Texture avatar4;
-    if (!avatar4.loadFromFile("screens/main_menu/components/characters/joma/avatar4.jpg"))
+    if (!avatar4.loadFromFile("screens/main_menu/components/characters/joma/avatar4.png"))
     {
         throw std::runtime_error("Joma avatar load failed");
     }
@@ -220,7 +220,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
     characters->emplace_back("Joma", std::move(avatar4), specs4);
 
     sf::Texture avatar5;
-    if (!avatar5.loadFromFile("screens/main_menu/components/characters/lana/avatr5.jpg"))
+    if (!avatar5.loadFromFile("screens/main_menu/components/characters/lana/avatr5.png"))
     {
         throw std::runtime_error("Lana avatar load failed");
     }

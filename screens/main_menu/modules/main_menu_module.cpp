@@ -5,13 +5,14 @@
 #include "modules/character_rect_texture/character_rect_texture.h"
 #include "screens/main_menu/components/characters/characters.h"
 #include "screens/main_menu/components/character_select.h"
+#include "screens/fight/modules/battle_message/battle_message.h"
 #include "iostream"
 #include "cmath"
 #include <algorithm>
 
 static int CHARACTERS_IN_ROW = 3;
 
-MainMenuModule::MainMenuModule(Game &game) : Screen(game)
+MainMenuModule::MainMenuModule(Game &game) : Screen(game), battle_message(this)
 {
     // placeholder
     //  std::unique_ptr<sf::RectangleShape> rectangle = std::make_unique<sf::RectangleShape>((sf::Vector2f(120.0f, 60.0f)));
@@ -47,6 +48,7 @@ MainMenuModule::MainMenuModule(Game &game) : Screen(game)
 
     bg_music.setLooping(true);
     bg_music.play();
+    // battle_message.show_custom("THIS MAIN MENU", sf::Color::Blue, 60);
 };
 
 void MainMenuModule::handle_event(const sf::Event &event)

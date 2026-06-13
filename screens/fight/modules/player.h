@@ -55,5 +55,6 @@ public:
     void reset_animation();
     void reset_player();
     void animate();
+    float get_block_energy_percent() const { return (_block_energy_max > 0.f) ? (_block_energy / _block_energy_max * 100.f) : 0.f; }
     void select_sprite(const sf::Texture &texture, const std::vector<sf::IntRect> &active_sprite_frames);
 };
