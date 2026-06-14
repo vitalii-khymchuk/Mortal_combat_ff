@@ -1,7 +1,7 @@
 #pragma once
 #include "modules/screen/screen.h"
 #include "modules/constants/constants.h"
-#include "screens/fight/modules/player.h"
+#include "screens/fight/modules/player/player.h"
 #include "screens/fight/modules/sounds/sounds.h"
 #include "modules/timers/timers.h"
 #include "screens/fight/modules/battle_message/battle_message.h"

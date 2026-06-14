@@ -1,5 +1,5 @@
 #include "health_bar.h"
-#include "screens/fight/modules/fight_module.h"
+#include "screens/fight/modules/fight_module/fight_module.h"
 #include <algorithm>
 #include <memory>
 

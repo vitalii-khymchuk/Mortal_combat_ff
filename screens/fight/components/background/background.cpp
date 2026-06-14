@@ -1,5 +1,5 @@
 #include "background.h"
-#include "screens/fight/modules/fight_module.h"
+#include "screens/fight/modules/fight_module/fight_module.h"
 #include "modules/game/game.h"
 #include <memory>
 

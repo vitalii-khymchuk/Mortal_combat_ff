@@ -1,5 +1,5 @@
 #include "bg_select.h"
-#include "screens/main_menu/modules/main_menu_module.h"
+#include "screens/main_menu/modules/main_menu_module/main_menu_module.h"
 #include "modules/game/game.h"
 #include "iostream"
 #include <vector>

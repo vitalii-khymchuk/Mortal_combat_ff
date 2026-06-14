@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "character_select.h"
-#include "screens/main_menu/modules/main_menu_module.h"
+#include "screens/main_menu/modules/main_menu_module/main_menu_module.h"
 #include "modules/character/character.h"
 #include "modules/game/game.h"
 #include <iostream>
@@ -14,7 +14,7 @@ void init_char_select(MainMenuModule *main_menu_ptr, int offset, bool isCharacte
 
     std::unique_ptr<sf::Sprite> SPRITE_AVATARKA;
 
-    if (!main_menu_ptr->_game.game_font.openFromFile("screens/main_menu/assets/pixel_font.ttf"))
+    if (!main_menu_ptr->_game.game_font.openFromFile("assets/pixel_font.ttf"))
         return;
 
     // 3. Создаём текст-подсказки внизу
