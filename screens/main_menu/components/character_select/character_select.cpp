@@ -66,9 +66,6 @@ void init_char_select(MainMenuModule *main_menu_ptr, int offset, bool isCharacte
 
             avas[0]->setPosition(sf::Vector2f(margin.first + static_cast<float>(offset), 260.0f + margin.second));
 
-            std::cout << "current square's postion -> x =" << margin.first + static_cast<float>(offset)
-                      << " y = " << margin.second + 260.0f << std::endl;
-
             // добавляем аватарки персонажей
             sf::Vector2u avatarka_texture_size = characterS[i].get_avatarka().getSize();
 
@@ -97,8 +94,6 @@ void init_char_select(MainMenuModule *main_menu_ptr, int offset, bool isCharacte
         {
             margin_act.first = pos.first + ava_rect_size.first + margin.first;
             margin_act.second = 260.0f + margin.second;
-            std::cout << "first row: current square's postion -> x =" << margin_act.first
-                      << " y = " << margin_act.second << std::endl;
 
             avas.emplace_back(std::make_unique<CharacterRectTexture>(
                 sf::Vector2f(ava_rect_size.first, ava_rect_size.second), i, isCharacterB));
@@ -138,9 +133,6 @@ void init_char_select(MainMenuModule *main_menu_ptr, int offset, bool isCharacte
                 avatarki[i]->setScale(sf::Vector2f(scale_x, scale_y));
                 avatarki[i]->setPosition(sf::Vector2f(margin_act.first, margin_act.second));
                 //
-
-                std::cout << "current square's postion -> x =" << margin_act.first
-                          << " y = " << margin_act.second << std::endl;
             }
             else
             {
@@ -159,9 +151,6 @@ void init_char_select(MainMenuModule *main_menu_ptr, int offset, bool isCharacte
                 avatarki[i]->setScale(sf::Vector2f(scale_x, scale_y));
                 avatarki[i]->setPosition(sf::Vector2f(margin_act.first, margin_act.second));
                 //
-
-                std::cout << "current square's postion -> x =" << margin_act.first
-                          << " y = " << margin_act.second << std::endl;
             }
         }
 
