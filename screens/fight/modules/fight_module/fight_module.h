@@ -1,9 +1,10 @@
 #pragma once
 #include "modules/screen/screen.h"
 #include "modules/constants/constants.h"
-#include "screens/fight/modules/player.h"
+#include "screens/fight/modules/player/player.h"
 #include "screens/fight/modules/sounds/sounds.h"
 #include "modules/timers/timers.h"
+#include "screens/fight/modules/battle_message/battle_message.h"
 #include <SFML/Graphics.hpp>
 
 class Screen;
@@ -18,15 +19,16 @@ class FightModule : public Screen
     bool _is_pause = false;
 
     void end_fight(bool _force_end);
+    void prepare_next_fight();
     void pause_fight();
     void continue_fight();
     void tick_time();
     void track_hp();
 
 public:
-    Game &_game;
     Player player_A;
     Player player_B;
+    BattleMessage battle_message;
     Sounds sounds;
     Timers timers;
 
@@ -34,4 +36,8 @@ public:
     ~FightModule() override = default;
     void handle_frame_signal() override;
     void handle_event(const sf::Event &event) override;
+
+    int get_timer_sec() const { return _fight_timer_sec; }
+    int get_wins_a() const { return _player_a_wins; }
+    int get_wins_b() const { return _player_b_wins; }
 };

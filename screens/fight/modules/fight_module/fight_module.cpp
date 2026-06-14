@@ -2,17 +2,28 @@
 #include "modules/game/game.h"
 #include "screens/fight/components/background/background.h"
 #include "screens/fight/components/pause_text/pause_text.h"
+#include "screens/fight/components/health_bar/health_bar.h"
+// #include "screens/fight/modules/battle_message/battle_message.h"
 #include <iostream>
 
 FightModule::FightModule(Game &game)
-    : Screen(),
-      _game(game),
+    : Screen(game),
       player_A(*this, game.selected_character_A, 150, 200, false),
-      player_B(*this, game.selected_character_B, 650, 200, true)
+      player_B(*this, game.selected_character_B, 650, 200, true),
+      battle_message(this)
 {
     init_background(this);
+    init_health_bars(this);
     sounds.play_bg_music();
     sounds.play_round_sound(1);
+    battle_message.show_custom("ROUND 1", sf::Color::White, 60);
+    auto timer_2 = timers.add_timer(2, [this]()
+                                    { battle_message.hide(); }, true);
+    auto timer_1 = timers.add_timer(2, [this, timer_2]()
+                                    { battle_message.show_custom("FIGHT", sf::Color::White, 100);
+        timers.start(timer_2); }, true);
+
+    timers.start(timer_1);
 }
 
 void FightModule::handle_event(const sf::Event &event)
@@ -73,6 +84,8 @@ void FightModule::handle_event(const sf::Event &event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W) && event.getIf<sf::Event::KeyPressed>())
     {
         player_A.jump();
+        // battle_message.hide();
+        // battle_message.show_custom("Player A has jumped!", sf::Color::Magenta, 60);
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A) && event.getIf<sf::Event::KeyPressed>())
@@ -163,6 +176,26 @@ void FightModule::tick_time()
     // std::cout << "TIMER: " << _fight_timer_sec << std::endl;
 }
 
+void FightModule::prepare_next_fight()
+{
+    int new_round = _player_a_wins + _player_b_wins + 1;
+    player_A.reset_player();
+    player_B.reset_player();
+    sounds.play_round_sound(new_round);
+    _fight_timer_sec = MATCH_DURATION_SEC;
+    _is_pause = false;
+
+    battle_message.show_custom(("ROUND " + std::to_string(new_round)), sf::Color::White, 60);
+
+    auto timer_2 = timers.add_timer(2, [this]()
+                                    { battle_message.hide(); }, true);
+    auto timer_1 = timers.add_timer(2, [this, timer_2]()
+                                    { battle_message.show_custom("FIGHT", sf::Color::White, 100);
+        timers.start(timer_2); }, true);
+
+    timers.start(timer_1);
+};
+
 // end fight, _force_end = true return to main menu, _force_end = false, init new round
 void FightModule::end_fight(bool _force_end)
 {
@@ -172,9 +205,7 @@ void FightModule::end_fight(bool _force_end)
         return;
     }
 
-    player_A.reset_player();
-    player_B.reset_player();
-    sounds.play_round_sound(_player_a_wins + _player_b_wins + 1);
+    prepare_next_fight();
 };
 
 void FightModule::pause_fight()
@@ -193,29 +224,22 @@ void FightModule::track_hp()
 {
     static bool finish_him_played = false;
 
-    if (_player_a_wins == 2)
-    {
-        pause_fight();
-        // win msg
-        end_fight(true);
-        return;
-    }
-
-    if (_player_b_wins == 2)
-    {
-        pause_fight();
-        // win msg
-        end_fight(true);
-        return;
-    }
-
     if (player_A._hp_percents <= 0)
     {
         static int timer_id = timers.add_timer(3, [this]()
                                                {
-                               _player_b_wins++;
-                               end_fight(false);
-                               finish_him_played = false; });
+                                                   finish_him_played = false;
+
+                                                   if (_player_b_wins == 2)
+                                                   {
+                                                       battle_message.hide();
+                                                       _is_pause = true;
+                                                       end_fight(true);
+                                                   }
+                                                   else
+                                                   {
+                                                       end_fight(false);
+                                                   } });
         if (timers.is_running(timer_id))
         {
             return;
@@ -223,15 +247,29 @@ void FightModule::track_hp()
 
         // win msg
         timers.start(timer_id);
+        _player_b_wins++;
+        if (_player_b_wins == 2)
+        {
+            battle_message.show_custom(player_B.get_character_name() + " WON", sf::Color::White, 60);
+        };
     }
 
     if (player_B._hp_percents <= 0)
     {
         static int timer_id = timers.add_timer(3, [this]()
                                                {
-                               _player_a_wins++;
-                               end_fight(false);
-                               finish_him_played = false; });
+                               finish_him_played = false;
+
+                               if (_player_a_wins == 2)
+                               {
+                                   battle_message.hide();
+                                   _is_pause = true;
+                                   end_fight(true);
+                               }
+                               else
+                               {
+                                   end_fight(false);
+                               } });
         if (timers.is_running(timer_id))
         {
             return;
@@ -239,25 +277,39 @@ void FightModule::track_hp()
 
         // win msg
         timers.start(timer_id);
+        _player_a_wins++;
+        if (_player_a_wins == 2)
+        {
+            battle_message.show_custom(player_B.get_character_name() + " WON", sf::Color::White, 60);
+        };
     }
 
     if (!finish_him_played && (player_A._hp_percents <= 20 || player_B._hp_percents <= 20))
     {
         finish_him_played = true;
         sounds.play_finish_him_sound();
+
+        battle_message.show_custom("FINISH HIM", sf::Color::White, 60);
+        auto timer_1 = timers.add_timer(2, [this]()
+                                        { battle_message.hide(); }, true);
+        timers.start(timer_1);
     }
 };
 
 void FightModule::handle_frame_signal()
 {
     // disable clock signal for characters while pause
-    if (_is_pause)
+    if (_is_pause || _game.get_current_screen() != CURRENT_SCREEN::MATCH)
     {
         return;
     }
+
     player_A.handle_fps_signal();
     player_B.handle_fps_signal();
     tick_time();
+    update_health_bars(this);
+
+    // SHOULD BE CALLED LAST
     track_hp();
     timers.tick();
 }

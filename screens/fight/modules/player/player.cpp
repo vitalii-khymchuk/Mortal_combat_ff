@@ -1,8 +1,9 @@
 #include "player.h"
-#include "fight_module.h"
+#include "screens/fight/modules/fight_module/fight_module.h"
 #include "modules/constants/constants.h"
 #include "modules/game/game.h"
 #include "iostream"
+#include <algorithm>
 
 Player::Player(FightModule &fight_module,
                Character &character,

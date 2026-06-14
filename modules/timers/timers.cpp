@@ -5,12 +5,13 @@
 
 Timers::Timers() = default;
 
-Timers::TimerId Timers::add_timer(float duration_sec, Callback callback)
+Timers::TimerId Timers::add_timer(float duration_sec, Callback callback, bool is_self_removable)
 {
     TimerEntry entry;
     entry.id = _next_id++;
     entry.duration_sec = duration_sec;
     entry.callback = std::move(callback);
+    entry.is_self_removable = is_self_removable;
 
     _timers.push_back(std::move(entry));
     return _timers.back().id;
@@ -178,6 +179,10 @@ void Timers::tick()
             {
                 timer.callback_called = true;
                 timer.callback();
+                if (timer.is_self_removable)
+                {
+                    remove_timer(timer.id);
+                }
             }
         }
     }

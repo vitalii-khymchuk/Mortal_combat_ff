@@ -14,7 +14,7 @@ public:
 
     Timers();
 
-    TimerId add_timer(float duration_sec, Callback callback = nullptr);
+    TimerId add_timer(float duration_sec, Callback callback = nullptr, bool is_self_removable = false);
     bool remove_timer(TimerId id);
 
     bool start(TimerId id);
@@ -50,6 +50,7 @@ private:
         bool is_running = false;
         bool is_finished = false;
         bool callback_called = false;
+        bool is_self_removable = false;
     };
 
     std::vector<TimerEntry> _timers;

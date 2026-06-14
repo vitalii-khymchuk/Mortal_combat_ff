@@ -3,6 +3,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "modules/screen/screen.h"
+#include "screens/fight/modules/battle_message/battle_message.h"
 #include <SFML/Audio.hpp>
 
 class Screen;
@@ -10,7 +11,12 @@ class Game;
 class Character;
 
 inline std::vector<std::string>
-    bg_paths = {"screens/main_menu/assets/background1.png", "screens/main_menu/assets/background2.jpg"};
+    bg_paths = {
+        "screens/main_menu/assets/background1.png",
+        "screens/main_menu/assets/background2.png",
+        "screens/main_menu/assets/background3.png",
+        "screens/main_menu/assets/background4.png",
+};
 
 class MainMenuModule : public Screen
 {
@@ -28,9 +34,10 @@ class MainMenuModule : public Screen
     void upd_selected_char_text(const int &next_index, const bool &is_character_B);
 
 public:
-    Game &_game;
     std::unique_ptr<std::vector<Character>> _characters;
     MainMenuModule(Game &game);
     ~MainMenuModule() override = default;
     void handle_event(const sf::Event &event) override;
+    BattleMessage battle_message;
+    sf::Texture menu_bg;
 };
