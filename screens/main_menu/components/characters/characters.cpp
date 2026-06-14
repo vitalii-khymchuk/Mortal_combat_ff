@@ -111,7 +111,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
 
     specs specs2 = specs({._x_speed_max = 1300,
                           ._weight_factor = 2,
-                          ._height_px = 80,
+                          ._height_px = 100,
                           ._hp_factor = 1.2,
                           ._stamina_recovery_factor = 1,
                           ._hand_recovery_sec = 0.5,
@@ -159,6 +159,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
     hand_kick_texture_frames.push_back(sf::IntRect({427, 19}, {275, 445}));
     hand_kick_texture_frames.push_back(sf::IntRect({788, 19}, {401, 445}));
     hand_kick_texture_frames.push_back(sf::IntRect({1255, 19}, {489, 445}));
+    hand_kick_texture_frames.push_back(sf::IntRect({1786, 19}, {275, 445}));
 
     if (!leg_kick_texture.loadFromFile("screens/main_menu/components/characters/jojo/leg_kick_animation.png"))
     {
@@ -171,6 +172,18 @@ std::unique_ptr<std::vector<Character>> init_characters()
     leg_kick_texture_frames.push_back(sf::IntRect({758, 22}, {443, 446}));
     leg_kick_texture_frames.push_back(sf::IntRect({1233, 22}, {261, 446}));
 
+    if (!block_texture.loadFromFile("screens/main_menu/components/characters/jojo/block_animation.png"))
+    {
+        throw std::runtime_error("Jojo block animation load failed");
+    }
+
+    block_texture_frames.clear();
+    block_texture_frames.push_back(sf::IntRect({14, 14}, {262, 427}));
+    block_texture_frames.push_back(sf::IntRect({350, 14}, {289, 427}));
+    block_texture_frames.push_back(sf::IntRect({704, 14}, {304, 427}));
+    block_texture_frames.push_back(sf::IntRect({1095, 14}, {316, 427}));
+    block_texture_frames.push_back(sf::IntRect({1487, 14}, {321, 427}));
+
     characters->emplace_back("Jojo",
                              std::move(avatar2),
                              specs2,
@@ -181,7 +194,9 @@ std::unique_ptr<std::vector<Character>> init_characters()
                              hand_kick_texture,
                              hand_kick_texture_frames,
                              leg_kick_texture,
-                             leg_kick_texture_frames);
+                             leg_kick_texture_frames,
+                             block_texture,
+                             block_texture_frames);
 
     sf::Texture avatar3;
     if (!avatar3.loadFromFile("screens/main_menu/components/characters/jola/avatar3.png"))
