@@ -19,6 +19,7 @@ class FightModule : public Screen
     bool _is_pause = false;
 
     void end_fight(bool _force_end);
+    void prepare_next_fight();
     void pause_fight();
     void continue_fight();
     void tick_time();

@@ -1,6 +1,6 @@
 #pragma once
 
-const int GROUND_Y_LEVEL = 500;
+const int GROUND_Y_LEVEL = 465;
 // const int G_FORCE_FPS_PER_SEC_SQUARE = 70;
 // const int ROUND_DURATION_SEC = 90;
 const int INTERACTION_DISTANCE_PX = 10;
