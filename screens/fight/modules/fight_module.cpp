@@ -36,8 +36,6 @@ void FightModule::handle_event(const sf::Event &event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Enter) && event.getIf<sf::Event::KeyPressed>())
     {
         continue_fight();
-        // show_custom(text_str, text_color, font_size);
-        battle_message.show_custom("FIGHT WAS RENEWED!", sf::Color::Blue, 50);
     }
 
     if (_is_pause)
@@ -141,25 +139,28 @@ void FightModule::handle_event(const sf::Event &event)
 // count and upd fight timer
 void FightModule::tick_time()
 {
-    if (!_sec_clock.isRunning())
+    static sf::Clock sec_clock;
+    if (!sec_clock.isRunning())
     {
-        _sec_clock.start();
+        sec_clock.start();
     }
 
-    sf::Time elapsed = _sec_clock.getElapsedTime();
+    sf::Time elapsed = sec_clock.getElapsedTime();
     float time = elapsed.asSeconds();
 
     if (time >= 1)
     {
-        _sec_clock.restart();
+        sec_clock.restart();
         if (!_is_pause)
         {
             _fight_timer_sec--;
+            // upd statusbar
         }
     }
 
     if (_fight_timer_sec <= 0)
     {
+        // out of time msg
         end_fight(false);
         _fight_timer_sec = MATCH_DURATION_SEC;
     }
@@ -168,19 +169,14 @@ void FightModule::tick_time()
 }
 
 // end fight, _force_end = true return to main menu, _force_end = false, init new round
-void FightModule::end_fight(bool force_end)
+void FightModule::end_fight(bool _force_end)
 {
-    if (force_end)
+    if (_force_end)
     {
-        // Не вызываем set_current_screen прямо здесь — это может быть вызвано
-        // из callback таймера, внутри timers.tick(), что приведёт к краша
-        // (уничтожение FightModule во время итерации по timers).
-        // Ставим флаг — переход произойдёт в начале следующего кадра.
-        _go_to_menu = true;
+        _game.set_current_screen(CURRENT_SCREEN::MAIN_MENU);
         return;
     }
 
-    _fight_timer_sec = MATCH_DURATION_SEC;
     player_A.reset_player();
     player_B.reset_player();
     sounds.play_round_sound(_player_a_wins + _player_b_wins + 1);
@@ -194,74 +190,76 @@ void FightModule::pause_fight()
 
 void FightModule::continue_fight()
 {
-
     _is_pause = false;
     remove_pause_texts(_game);
 };
 
 void FightModule::track_hp()
 {
-    // Кто набрал 2 победы — матч окончен, возврат в меню
-    if (_player_a_wins == 2 || _player_b_wins == 2)
+    static bool finish_him_played = false;
+
+    if (_player_a_wins == 2)
     {
-        // pause_fight();
+        pause_fight();
+        // win msg
         end_fight(true);
         return;
     }
 
-    // HP игрока A упало до 0 — побеждает B
+    if (_player_b_wins == 2)
+    {
+        pause_fight();
+        // win msg
+        end_fight(true);
+        return;
+    }
+
     if (player_A._hp_percents <= 0)
     {
-        // Создаём таймер только один раз за раунд
-        if (_timer_id_a == -1)
+        static int timer_id = timers.add_timer(3, [this]()
+                                               {
+                               _player_b_wins++;
+                               end_fight(false);
+                               finish_him_played = false; });
+        if (timers.is_running(timer_id))
         {
-            _timer_id_a = timers.add_timer(3, [this]()
-                                           {
-                _player_b_wins++;
-                _timer_id_a = -1;
-                _finish_him_played = false;
-                end_fight(false); });
-            timers.start(_timer_id_a);
+            return;
         }
-        return;
+
+        // win msg
+        timers.start(timer_id);
     }
 
-    // HP игрока B упало до 0 — побеждает A
     if (player_B._hp_percents <= 0)
     {
-        if (_timer_id_b == -1)
+        static int timer_id = timers.add_timer(3, [this]()
+                                               {
+                               _player_a_wins++;
+                               end_fight(false);
+                               finish_him_played = false; });
+        if (timers.is_running(timer_id))
         {
-            _timer_id_b = timers.add_timer(3, [this]()
-                                           {
-                _player_a_wins++;
-                _timer_id_b = -1;
-                _finish_him_played = false;
-                end_fight(false); });
-            timers.start(_timer_id_b);
+            return;
         }
-        return;
+
+        // win msg
+        timers.start(timer_id);
     }
 
-    // "Finish him" звук при низком HP
-    if (!_finish_him_played && (player_A._hp_percents <= 20 || player_B._hp_percents <= 20))
+    if (!finish_him_played && (player_A._hp_percents <= 20 || player_B._hp_percents <= 20))
     {
-        _finish_him_played = true;
+        finish_him_played = true;
         sounds.play_finish_him_sound();
     }
 };
 
 void FightModule::handle_frame_signal()
 {
-    // Безопасный переход в меню — после того как предыдущий кадр полностью завершён
-    if (_go_to_menu)
-    {
-        _game.set_current_screen(CURRENT_SCREEN::MAIN_MENU);
-        return; // FightModule уже уничтожен, дальше ничего не делаем
-    }
-
+    // disable clock signal for characters while pause
     if (_is_pause)
+    {
         return;
-
+    }
     player_A.handle_fps_signal();
     player_B.handle_fps_signal();
     tick_time();

@@ -17,17 +17,8 @@ class FightModule : public Screen
     int _player_b_wins = 0;
     int _current_round = 1;
     bool _is_pause = false;
-    bool _finish_him_played = false;
-    bool _go_to_menu = false; // флаг: перейти в меню в начале следующего кадра
 
-    // -1 = таймер ещё не создан для этого раунда
-    int _timer_id_a = -1;
-    int _timer_id_b = -1;
-
-    // Член класса, не static — сбрасывается при каждом новом FightModule
-    sf::Clock _sec_clock;
-
-    void end_fight(bool force_end);
+    void end_fight(bool _force_end);
     void pause_fight();
     void continue_fight();
     void tick_time();
