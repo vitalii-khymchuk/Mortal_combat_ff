@@ -2,6 +2,7 @@
 #include "screens/fight/modules/fight_module/fight_module.h"
 #include <algorithm>
 #include <memory>
+#include "modules/character/character.h"
 
 // ── Размеры окна ─────────────────────────────────────────────────────────────
 static constexpr float WINDOW_W = 800.f;
@@ -118,6 +119,19 @@ void init_health_bars(FightModule *fm)
     // 2. Рамки аватарок
     make_avatar_frame(fm, 5.f, AVATAR_Y);
     make_avatar_frame(fm, WINDOW_W - AVATAR_W - 5.f, AVATAR_Y);
+
+    auto avatarka_A = std::make_unique<sf::Sprite>(fm->_game.selected_character_A.get_avatarka());
+    sf::Vector2u ava_A_size = (fm->_game.selected_character_A.get_avatarka()).getSize();
+    avatarka_A->setScale(sf::Vector2f(AVATAR_W / ava_A_size.x, AVATAR_H / ava_A_size.y));
+    avatarka_A->setPosition(sf::Vector2f(5.f, AVATAR_Y));
+    fm->_game.shapes.emplace_back(std::move(avatarka_A));
+
+    auto avatarka_B = std::make_unique<sf::Sprite>(fm->_game.selected_character_B.get_avatarka());
+    sf::Vector2u ava_B_size = (fm->_game.selected_character_B.get_avatarka()).getSize();
+    avatarka_B->setScale(sf::Vector2f(-1 * (AVATAR_W / ava_B_size.x), AVATAR_H / ava_B_size.y));
+    avatarka_B->setOrigin(sf::Vector2f(ava_B_size.x, 0.f));
+    avatarka_B->setPosition(sf::Vector2f(WINDOW_W - AVATAR_W - 5.f, AVATAR_Y));
+    fm->_game.shapes.emplace_back(std::move(avatarka_B));
 
     // 3. Полоски Player A
     {

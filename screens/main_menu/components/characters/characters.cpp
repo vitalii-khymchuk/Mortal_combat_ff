@@ -8,13 +8,13 @@ std::unique_ptr<std::vector<Character>> init_characters()
     characters->reserve(6);
 
     sf::Texture avatar1, walk_texture, jump_texture, hand_kick_texture, leg_kick_texture, block_texture;
-    if (!avatar1.loadFromFile("screens/main_menu/components/characters/joko/avatar1.png"))
+    if (!avatar1.loadFromFile("screens/main_menu/components/characters/Sgt. Barklee/avatar1.png"))
     {
-        throw std::runtime_error("Joko avatar load failed");
+        throw std::runtime_error("Sgt. Barklee avatar load failed");
     }
-    if (!walk_texture.loadFromFile("screens/main_menu/components/characters/joko/walk_animation.png"))
+    if (!walk_texture.loadFromFile("screens/main_menu/components/characters/Sgt. Barklee/walk_animation.png"))
     {
-        throw std::runtime_error("Joko walk animation load failed");
+        throw std::runtime_error("Sgt. Barklee walk animation load failed");
     }
 
     std::vector<sf::IntRect> walk_texture_frames;
@@ -28,9 +28,9 @@ std::unique_ptr<std::vector<Character>> init_characters()
     walk_texture_frames.push_back(sf::IntRect({1175, 0}, {142, 192})); // hero running frame 8
     walk_texture_frames.push_back(sf::IntRect({1345, 0}, {147, 194})); // hero running frame 9
 
-    if (!jump_texture.loadFromFile("screens/main_menu/components/characters/joko/jump_animation.png"))
+    if (!jump_texture.loadFromFile("screens/main_menu/components/characters/Sgt. Barklee/jump_animation.png"))
     {
-        throw std::runtime_error("Joko jump animation load failed");
+        throw std::runtime_error("Sgt. Barklee jump animation load failed");
     }
 
     std::vector<sf::IntRect> jump_texture_frames;
@@ -41,9 +41,9 @@ std::unique_ptr<std::vector<Character>> init_characters()
     jump_texture_frames.push_back(sf::IntRect({945, 55}, {195, 259}));  // hero frame 5 right_x = 1162
     jump_texture_frames.push_back(sf::IntRect({1179, 70}, {219, 243})); // hero frame 6 right_x = 1405
 
-    if (!hand_kick_texture.loadFromFile("screens/main_menu/components/characters/joko/hand_kick_animation.png"))
+    if (!hand_kick_texture.loadFromFile("screens/main_menu/components/characters/Sgt. Barklee/hand_kick_animation.png"))
     {
-        throw std::runtime_error("Joko hand kick animation load failed");
+        throw std::runtime_error("Sgt. Barklee hand kick animation load failed");
     }
 
     std::vector<sf::IntRect> hand_kick_texture_frames;
@@ -53,9 +53,9 @@ std::unique_ptr<std::vector<Character>> init_characters()
     hand_kick_texture_frames.push_back(sf::IntRect({950, 0}, {322, 331}));  // hero frame 4
     hand_kick_texture_frames.push_back(sf::IntRect({1380, 0}, {207, 331})); // hero frame 5
 
-    if (!leg_kick_texture.loadFromFile("screens/main_menu/components/characters/joko/leg_kick_animation.png"))
+    if (!leg_kick_texture.loadFromFile("screens/main_menu/components/characters/Sgt. Barklee/leg_kick_animation.png"))
     {
-        throw std::runtime_error("Joko leg kick animation load failed");
+        throw std::runtime_error("Sgt. Barklee leg kick animation load failed");
     }
 
     std::vector<sf::IntRect> leg_kick_texture_frames;
@@ -67,9 +67,9 @@ std::unique_ptr<std::vector<Character>> init_characters()
     leg_kick_texture_frames.push_back(sf::IntRect({1834, 0}, {346, 368}));
     leg_kick_texture_frames.push_back(sf::IntRect({2209, 0}, {273, 368}));
 
-    if (!block_texture.loadFromFile("screens/main_menu/components/characters/joko/block_animation.png"))
+    if (!block_texture.loadFromFile("screens/main_menu/components/characters/Sgt. Barklee/block_animation.png"))
     {
-        throw std::runtime_error("Joko leg kick animation load failed");
+        throw std::runtime_error("Sgt. Barklee leg kick animation load failed");
     }
 
     std::vector<sf::IntRect> block_texture_frames;
@@ -89,7 +89,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
                           ._hand_force = 7,
                           ._leg_force = 10});
 
-    characters->emplace_back("Joko",
+    characters->emplace_back("Sgt. Barklee",
                              avatar1,
                              specs1,
                              walk_texture,
@@ -104,9 +104,9 @@ std::unique_ptr<std::vector<Character>> init_characters()
                              block_texture_frames);
 
     sf::Texture avatar2;
-    if (!avatar2.loadFromFile("screens/main_menu/components/characters/jojo/avatar2.png"))
+    if (!avatar2.loadFromFile("screens/main_menu/components/characters/Cluck Norris/avatar2.png"))
     {
-        throw std::runtime_error("Jojo avatar load failed");
+        throw std::runtime_error("Cluck Norris avatar load failed");
     }
 
     specs specs2 = specs({._x_speed_max = 1300,
@@ -119,9 +119,9 @@ std::unique_ptr<std::vector<Character>> init_characters()
                           ._hand_force = 5,
                           ._leg_force = 8});
 
-    if (!walk_texture.loadFromFile("screens/main_menu/components/characters/jojo/walk_animation.png"))
+    if (!walk_texture.loadFromFile("screens/main_menu/components/characters/Cluck Norris/walk_animation.png"))
     {
-        throw std::runtime_error("Jojo walk animation load failed");
+        throw std::runtime_error("Cluck Norris walk animation load failed");
     }
 
     walk_texture_frames.clear();
@@ -136,9 +136,9 @@ std::unique_ptr<std::vector<Character>> init_characters()
     walk_texture_frames.push_back(sf::IntRect({2074, 16}, {234, 384}));
     walk_texture_frames.push_back(sf::IntRect({2337, 16}, {196, 384}));
 
-    if (!jump_texture.loadFromFile("screens/main_menu/components/characters/jojo/jump_animation.png"))
+    if (!jump_texture.loadFromFile("screens/main_menu/components/characters/Cluck Norris/jump_animation.png"))
     {
-        throw std::runtime_error("Jojo jump animation load failed");
+        throw std::runtime_error("Cluck Norris jump animation load failed");
     }
 
     jump_texture_frames.clear();
@@ -149,9 +149,9 @@ std::unique_ptr<std::vector<Character>> init_characters()
     jump_texture_frames.push_back(sf::IntRect({1385, 26}, {224, 371}));
     jump_texture_frames.push_back(sf::IntRect({1671, 26}, {225, 371}));
 
-    if (!hand_kick_texture.loadFromFile("screens/main_menu/components/characters/jojo/hand_kick_animation.png"))
+    if (!hand_kick_texture.loadFromFile("screens/main_menu/components/characters/Cluck Norris/hand_kick_animation.png"))
     {
-        throw std::runtime_error("Jojo hand hit animation load failed");
+        throw std::runtime_error("Cluck Norris hand hit animation load failed");
     }
 
     hand_kick_texture_frames.clear();
@@ -161,9 +161,9 @@ std::unique_ptr<std::vector<Character>> init_characters()
     hand_kick_texture_frames.push_back(sf::IntRect({1255, 19}, {489, 445}));
     hand_kick_texture_frames.push_back(sf::IntRect({1786, 19}, {275, 445}));
 
-    if (!leg_kick_texture.loadFromFile("screens/main_menu/components/characters/jojo/leg_kick_animation.png"))
+    if (!leg_kick_texture.loadFromFile("screens/main_menu/components/characters/Cluck Norris/leg_kick_animation.png"))
     {
-        throw std::runtime_error("Jojo leg kick animation load failed");
+        throw std::runtime_error("Cluck Norris leg kick animation load failed");
     }
 
     leg_kick_texture_frames.clear();
@@ -172,9 +172,9 @@ std::unique_ptr<std::vector<Character>> init_characters()
     leg_kick_texture_frames.push_back(sf::IntRect({758, 22}, {443, 446}));
     leg_kick_texture_frames.push_back(sf::IntRect({1233, 22}, {261, 446}));
 
-    if (!block_texture.loadFromFile("screens/main_menu/components/characters/jojo/block_animation.png"))
+    if (!block_texture.loadFromFile("screens/main_menu/components/characters/Cluck Norris/block_animation.png"))
     {
-        throw std::runtime_error("Jojo block animation load failed");
+        throw std::runtime_error("Cluck Norris block animation load failed");
     }
 
     block_texture_frames.clear();
@@ -184,7 +184,7 @@ std::unique_ptr<std::vector<Character>> init_characters()
     block_texture_frames.push_back(sf::IntRect({1095, 14}, {316, 427}));
     block_texture_frames.push_back(sf::IntRect({1487, 14}, {321, 427}));
 
-    characters->emplace_back("Jojo",
+    characters->emplace_back("Cluck Norris",
                              std::move(avatar2),
                              specs2,
                              walk_texture,
@@ -199,9 +199,9 @@ std::unique_ptr<std::vector<Character>> init_characters()
                              block_texture_frames);
 
     sf::Texture avatar3;
-    if (!avatar3.loadFromFile("screens/main_menu/components/characters/jola/avatar3.png"))
+    if (!avatar3.loadFromFile("screens/main_menu/components/characters/Rambo/avatar3.png"))
     {
-        throw std::runtime_error("Jola avatar load failed");
+        throw std::runtime_error("Rambo avatar load failed");
     }
 
     specs specs3 = specs({._x_speed_max = 600,
@@ -214,12 +214,89 @@ std::unique_ptr<std::vector<Character>> init_characters()
                           ._hand_force = 7,
                           ._leg_force = 10});
 
-    characters->emplace_back("Jola", std::move(avatar3), specs3);
+    if (!walk_texture.loadFromFile("screens/main_menu/components/characters/Rambo/walk_animation.png"))
+    {
+        throw std::runtime_error("Rambo walk animation load failed");
+    }
+
+    walk_texture_frames.clear();
+    walk_texture_frames.push_back(sf::IntRect({62, 22}, {259, 328}));
+    walk_texture_frames.push_back(sf::IntRect({380, 22}, {297, 328}));
+    walk_texture_frames.push_back(sf::IntRect({764, 22}, {258, 328}));
+    walk_texture_frames.push_back(sf::IntRect({1124, 22}, {253, 328}));
+    walk_texture_frames.push_back(sf::IntRect({1448, 22}, {289, 328}));
+    walk_texture_frames.push_back(sf::IntRect({1797, 22}, {265, 328}));
+    walk_texture_frames.push_back(sf::IntRect({2113, 22}, {257, 328}));
+    walk_texture_frames.push_back(sf::IntRect({2427, 22}, {270, 328}));
+    walk_texture_frames.push_back(sf::IntRect({2788, 22}, {257, 328}));
+
+    if (!jump_texture.loadFromFile("screens/main_menu/components/characters/Rambo/jump_animation.png"))
+    {
+        throw std::runtime_error("Rambo jump animation load failed");
+    }
+
+    jump_texture_frames.clear();
+    jump_texture_frames.push_back(sf::IntRect({153, 39}, {254, 352}));
+    jump_texture_frames.push_back(sf::IntRect({548, 39}, {277, 352}));
+    jump_texture_frames.push_back(sf::IntRect({967, 39}, {253, 352}));
+    jump_texture_frames.push_back(sf::IntRect({1291, 39}, {266, 352}));
+    jump_texture_frames.push_back(sf::IntRect({1578, 132}, {236, 253}));
+    jump_texture_frames.push_back(sf::IntRect({1876, 39}, {236, 352}));
+    jump_texture_frames.push_back(sf::IntRect({2208, 39}, {283, 352}));
+
+    if (!hand_kick_texture.loadFromFile("screens/main_menu/components/characters/Rambo/hand_kick_animation.png"))
+    {
+        throw std::runtime_error("Rambo hand hit animation load failed");
+    }
+
+    hand_kick_texture_frames.clear();
+    hand_kick_texture_frames.push_back(sf::IntRect({90, 81}, {240, 293}));
+    hand_kick_texture_frames.push_back(sf::IntRect({384, 81}, {273, 293}));
+    hand_kick_texture_frames.push_back(sf::IntRect({762, 81}, {347, 293}));
+    hand_kick_texture_frames.push_back(sf::IntRect({1144, 81}, {383, 293}));
+    hand_kick_texture_frames.push_back(sf::IntRect({1549, 81}, {303, 293}));
+
+    if (!leg_kick_texture.loadFromFile("screens/main_menu/components/characters/Rambo/leg_kick_animation.png"))
+    {
+        throw std::runtime_error("Rambo leg kick animation load failed");
+    }
+
+    leg_kick_texture_frames.clear();
+    leg_kick_texture_frames.push_back(sf::IntRect({103, 71}, {263, 298}));
+    leg_kick_texture_frames.push_back(sf::IntRect({440, 71}, {223, 298}));
+    leg_kick_texture_frames.push_back(sf::IntRect({717, 71}, {291, 298}));
+    leg_kick_texture_frames.push_back(sf::IntRect({1064, 71}, {235, 298}));
+    leg_kick_texture_frames.push_back(sf::IntRect({1414, 71}, {259, 298}));
+    leg_kick_texture_frames.push_back(sf::IntRect({1793, 71}, {259, 298}));
+
+    if (!block_texture.loadFromFile("screens/main_menu/components/characters/Rambo/block_animation.png"))
+    {
+        throw std::runtime_error("Rambo block animation load failed");
+    }
+
+    block_texture_frames.clear();
+    block_texture_frames.push_back(sf::IntRect({129, 78}, {286, 326}));
+    block_texture_frames.push_back(sf::IntRect({542, 78}, {284, 326}));
+    block_texture_frames.push_back(sf::IntRect({951, 78}, {245, 326}));
+
+    characters->emplace_back("Rambo",
+                             std::move(avatar3),
+                             specs3,
+                             walk_texture,
+                             walk_texture_frames,
+                             jump_texture,
+                             jump_texture_frames,
+                             hand_kick_texture,
+                             hand_kick_texture_frames,
+                             leg_kick_texture,
+                             leg_kick_texture_frames,
+                             block_texture,
+                             block_texture_frames);
 
     sf::Texture avatar4;
-    if (!avatar4.loadFromFile("screens/main_menu/components/characters/joma/avatar4.png"))
+    if (!avatar4.loadFromFile("screens/main_menu/components/characters/Bacon/avatar4.png"))
     {
-        throw std::runtime_error("Joma avatar load failed");
+        throw std::runtime_error("Bacon avatar load failed");
     }
 
     specs specs4 = specs({._x_speed_max = 600,
@@ -232,12 +309,78 @@ std::unique_ptr<std::vector<Character>> init_characters()
                           ._hand_force = 7,
                           ._leg_force = 10});
 
-    characters->emplace_back("Joma", std::move(avatar4), specs4);
+    if (!walk_texture.loadFromFile("screens/main_menu/components/characters/Bacon/walk_animation.png"))
+    {
+        throw std::runtime_error("Bacon walk animation load failed");
+    }
+
+    walk_texture_frames.clear();
+    walk_texture_frames.push_back(sf::IntRect({0, 0}, {207, 363}));
+    walk_texture_frames.push_back(sf::IntRect({221, 0}, {258, 363}));
+    walk_texture_frames.push_back(sf::IntRect({489, 0}, {206, 363}));
+    walk_texture_frames.push_back(sf::IntRect({702, 0}, {247, 363}));
+    walk_texture_frames.push_back(sf::IntRect({981, 0}, {272, 363}));
+    walk_texture_frames.push_back(sf::IntRect({1274, 0}, {262, 363}));
+
+    if (!jump_texture.loadFromFile("screens/main_menu/components/characters/Bacon/jump_animation.png"))
+    {
+        throw std::runtime_error("Bacon jump animation load failed");
+    }
+
+    jump_texture_frames.clear();
+    jump_texture_frames.push_back(sf::IntRect({0, 0}, {335, 480}));
+    jump_texture_frames.push_back(sf::IntRect({814, 0}, {343, 480}));
+    jump_texture_frames.push_back(sf::IntRect({1208, 0}, {323, 480}));
+    jump_texture_frames.push_back(sf::IntRect({1560, 0}, {302, 480}));
+
+    if (!hand_kick_texture.loadFromFile("screens/main_menu/components/characters/Bacon/hand_kick_animation.png"))
+    {
+        throw std::runtime_error("Bacon hand hit animation load failed");
+    }
+
+    hand_kick_texture_frames.clear();
+    hand_kick_texture_frames.push_back(sf::IntRect({0, 0}, {332, 481}));
+    hand_kick_texture_frames.push_back(sf::IntRect({448, 0}, {316, 481}));
+    hand_kick_texture_frames.push_back(sf::IntRect({858, 0}, {405, 481}));
+    hand_kick_texture_frames.push_back(sf::IntRect({1292, 0}, {463, 481}));
+    hand_kick_texture_frames.push_back(sf::IntRect({1902, 0}, {298, 481}));
+
+    if (!leg_kick_texture.loadFromFile("screens/main_menu/components/characters/Bacon/leg_kick_animation.png"))
+    {
+        throw std::runtime_error("Bacon leg kick animation load failed");
+    }
+
+    leg_kick_texture_frames.clear();
+    leg_kick_texture_frames.push_back(sf::IntRect({0, 0}, {262, 384}));
+    leg_kick_texture_frames.push_back(sf::IntRect({695, 0}, {209, 384}));
+    leg_kick_texture_frames.push_back(sf::IntRect({1728, 0}, {342, 384}));
+    leg_kick_texture_frames.push_back(sf::IntRect({2073, 0}, {265, 384}));
+
+    if (!block_texture.loadFromFile("screens/main_menu/components/characters/Bacon/block_animation.png"))
+    {
+        throw std::runtime_error("Bacon block animation load failed");
+    }
+
+    block_texture_frames.clear();
+    block_texture_frames.push_back(sf::IntRect({0, 0}, {350, 480}));
+    block_texture_frames.push_back(sf::IntRect({826, 0}, {284, 480}));
+    block_texture_frames.push_back(sf::IntRect({1890, 0}, {275, 480}));
+    characters->emplace_back("Bacon", std::move(avatar4), specs4,
+                             walk_texture,
+                             walk_texture_frames,
+                             jump_texture,
+                             jump_texture_frames,
+                             hand_kick_texture,
+                             hand_kick_texture_frames,
+                             leg_kick_texture,
+                             leg_kick_texture_frames,
+                             block_texture,
+                             block_texture_frames);
 
     sf::Texture avatar5;
-    if (!avatar5.loadFromFile("screens/main_menu/components/characters/lana/avatr5.png"))
+    if (!avatar5.loadFromFile("screens/main_menu/components/characters/Bulldozer/avatr5.png"))
     {
-        throw std::runtime_error("Lana avatar load failed");
+        throw std::runtime_error("Bulldozer avatar load failed");
     }
 
     specs specs5 = specs({._x_speed_max = 600,
@@ -250,12 +393,12 @@ std::unique_ptr<std::vector<Character>> init_characters()
                           ._hand_force = 7,
                           ._leg_force = 10});
 
-    characters->emplace_back("Lana", std::move(avatar5), specs5);
+    characters->emplace_back("Bulldozer", std::move(avatar5), specs5);
 
     sf::Texture avatar6;
-    if (!avatar6.loadFromFile("screens/main_menu/components/characters/nala/avatar6.png"))
+    if (!avatar6.loadFromFile("screens/main_menu/components/characters/Colt/avatar6.png"))
     {
-        throw std::runtime_error("Nala avatar load failed");
+        throw std::runtime_error("Colt avatar load failed");
     }
 
     specs specs6 = specs({._x_speed_max = 600,
@@ -268,6 +411,6 @@ std::unique_ptr<std::vector<Character>> init_characters()
                           ._hand_force = 7,
                           ._leg_force = 10});
 
-    characters->emplace_back("Nala", std::move(avatar6), specs6);
+    characters->emplace_back("Colt", std::move(avatar6), specs6);
     return characters;
 };
