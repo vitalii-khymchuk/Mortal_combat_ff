@@ -223,65 +223,71 @@ void FightModule::continue_fight()
 void FightModule::track_hp()
 {
     static bool finish_him_played = false;
+    static bool round_end_pending = false;
+
+    if (round_end_pending)
+    {
+        return;
+    }
 
     if (player_A._hp_percents <= 0)
     {
-        static int timer_id = timers.add_timer(3, [this]()
-                                               {
-                                                   finish_him_played = false;
-
-                                                   if (_player_b_wins == 2)
-                                                   {
-                                                       battle_message.hide();
-                                                       _is_pause = true;
-                                                       end_fight(true);
-                                                   }
-                                                   else
-                                                   {
-                                                       end_fight(false);
-                                                   } });
-        if (timers.is_running(timer_id))
-        {
-            return;
-        }
-
-        // win msg
-        timers.start(timer_id);
+        round_end_pending = true;
         _player_b_wins++;
+
         if (_player_b_wins == 2)
         {
             battle_message.show_custom(player_B.get_character_name() + " WON", sf::Color::White, 60);
-        };
+        }
+
+        auto timer_id = timers.add_timer(3, [this]()
+                                         {
+            finish_him_played = false;
+            round_end_pending = false;
+
+            if (_player_b_wins == 2)
+            {
+                battle_message.hide();
+                _is_pause = true;
+                end_fight(true);
+            }
+            else
+            {
+                end_fight(false);
+            } }, true);
+
+        timers.start(timer_id);
+        return;
     }
 
     if (player_B._hp_percents <= 0)
     {
-        static int timer_id = timers.add_timer(3, [this]()
-                                               {
-                               finish_him_played = false;
-
-                               if (_player_a_wins == 2)
-                               {
-                                   battle_message.hide();
-                                   _is_pause = true;
-                                   end_fight(true);
-                               }
-                               else
-                               {
-                                   end_fight(false);
-                               } });
-        if (timers.is_running(timer_id))
-        {
-            return;
-        }
-
-        // win msg
-        timers.start(timer_id);
+        round_end_pending = true;
         _player_a_wins++;
+
         if (_player_a_wins == 2)
         {
-            battle_message.show_custom(player_B.get_character_name() + " WON", sf::Color::White, 60);
-        };
+            battle_message.show_custom(player_A.get_character_name() + " WON", sf::Color::White, 60);
+        }
+
+        auto timer_id = timers.add_timer(3, [this]()
+                                         {
+            finish_him_played = false;
+            round_end_pending = false;
+
+            if (_player_a_wins == 2)
+            {
+                battle_message.hide();
+                _is_pause = true;
+                end_fight(true);
+            }
+            else
+            {
+                end_fight(false);
+            } }, true);
+
+        timers.start(timer_id);
+        return;
     }
 
     if (!finish_him_played && (player_A._hp_percents <= 20 || player_B._hp_percents <= 20))
@@ -290,11 +296,13 @@ void FightModule::track_hp()
         sounds.play_finish_him_sound();
 
         battle_message.show_custom("FINISH HIM", sf::Color::White, 60);
-        auto timer_1 = timers.add_timer(2, [this]()
-                                        { battle_message.hide(); }, true);
-        timers.start(timer_1);
+
+        auto timer_id = timers.add_timer(2, [this]()
+                                         { battle_message.hide(); }, true);
+
+        timers.start(timer_id);
     }
-};
+}
 
 void FightModule::handle_frame_signal()
 {
